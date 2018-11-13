@@ -96,7 +96,7 @@ class DynamodbAutoBackup {
 
     this.functionBackup = {
       name: `${this.serverless.service.service}-${this.custom.env}-dynamodbAutoBackups`,
-      handler: 'plugin/dynamodbAutoBackups.handler',
+      handler: 'node_modules/serverless-plugin-db-backups/dynamodbAutoBackups',
       events: [],
       environment: {},
     };
