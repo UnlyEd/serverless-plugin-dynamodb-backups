@@ -16,5 +16,5 @@
     "axios": ">= 0.x.x",
     "lodash": ">= 4.x.x",
     "moment": ">= 2.x.x"
-  },
+  }
 }
