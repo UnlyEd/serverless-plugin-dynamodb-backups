@@ -17,7 +17,7 @@ For that we created this plugin, to make sure that each project can create its o
 
 * Install the plugin
   ```bash
-  yarn add @github.... -D
+  yarn add https://bitbucket.org/studylink_team/serverless-plugin-db-backups.git -D
   ```
 
 ## Benefits
@@ -25,7 +25,6 @@ For that we created this plugin, to make sure that each project can create its o
 * Automated Backups on your resources (serverless.yml)
 * Easy configuration
 * Report Error on slack channel (see configuration)
-* Create a schedule lamdba function automatically based on your env.
 * Delete old Backups (see configuration)
 
 
@@ -43,7 +42,17 @@ plugins:
   - serverless-plugin-db-backups
 ```
 
-> Step 2: Custom config `serverless.yml`
+> Step 2: declare handler:
+
+Create a file:
+
+```javascript
+import { dynamodbAutoBackups } from 'serverless-plugin-db-backups';
+
+export const handler = dynamodbAutoBackups(event, context);
+```
+
+> Step 3: Custom config `serverless.yml`
 
 Set the `dynamodbAutoBackups` configuration option as follows:
 
@@ -51,9 +60,10 @@ Set the `dynamodbAutoBackups` configuration option as follows:
 custom:
   dynamodbAutoBackups:
     backupRate: 'your_schedule'
+    source: path/to/your_handler_file
 ```
 
-> Step 3: iamRoleStatements `serverless.yml`
+> Step 4: iamRoleStatements `serverless.yml`
 
 ```yaml
 provider:
@@ -77,7 +87,8 @@ provider:
 ```
 
 ### Configuration `serverless.yml`:
-
+* `source`
+  > **required** - path to your handler function.
 * `backupRate`
   > **required** - The schedule on which you want to backup your table. You can use either `rate` syntax (`rate(1 hour)`) or `cron` syntax (`cron(0 12 * * ? *)`). See [here](https://serverless.com/framework/docs/providers/aws/events/schedule/) for more details on configuration.
 * `slackWebhook`

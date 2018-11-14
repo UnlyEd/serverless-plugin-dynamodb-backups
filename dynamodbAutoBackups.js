@@ -1,7 +1,7 @@
-import AWS from 'aws-sdk';
-import filter from 'lodash/filter';
-import moment from 'moment';
-import axios from 'axios';
+const AWS = require('aws-sdk');
+const filter = require('lodash/filter');
+const moment = require('moment');
+const axios = require('axios');
 
 const Dynamodb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
 const SLACK_WEBHOOK = process.env.SLACK_WEBHOOK;
@@ -11,7 +11,7 @@ const BACKUP_RETENTION_DAYS = process.env.BACKUP_RETENTION_DAYS;
 const BACKUP_REMOVAL_ENABLED = process.env.BACKUP_REMOVAL_ENABLED;
 const TABLE_REGEX = process.env.TABLE_REGEX;
 
-export const handler = async (event, context) => {
+const dynamodbAutoBackups = async (event, context) => {
   try {
     const tables = await getTablesToBackup();
 
@@ -157,3 +157,5 @@ const tablesToBackup = async (tables) => {
   }
   return results;
 };
+
+export default dynamodbAutoBackups;
