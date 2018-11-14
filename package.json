@@ -2,7 +2,7 @@
   "name": "serverless-plugin-db-backups",
   "version": "1.0.0",
   "description": "Serverless plugin db backups - Automatically create backups on dynamodb",
-  "main": "lib/index.js",
+  "main": "index.js",
   "repository": "https://bitbucket.org/studylink_team/serverless-plugin-db-backups.git",
   "bugs": {
     "url": "https://bitbucket.org/studylink_team/serverless-plugin-db-backups/issues"
