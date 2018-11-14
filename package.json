@@ -18,13 +18,19 @@
     "aws lambda",
     "aws dynamodb"
   ],
+  "scripts": {
+    "build": "babel lib/dynamodbAutoBackups.js -o index.js"
+  },
   "author": "unly",
   "license": "MIT",
   "devDependencies": {
     "aws-sdk": "2.352.0",
     "axios": "0.18.0",
-    "chalk": "2.4.1",
+    "babel-cli": "6.26.0",
+    "babel-core": "6.26.3",
+    "babel-preset-env": "1.7.0",
     "bluebird": "3.5.3",
+    "chalk": "2.4.1",
     "semver": "5.6.0",
     "uuid": "3.3.2"
   },
@@ -32,5 +38,6 @@
     "axios": ">= 0.x.x",
     "lodash": ">= 4.x.x",
     "moment": ">= 2.x.x"
-  }
+  },
+  "dependencies": {}
 }
