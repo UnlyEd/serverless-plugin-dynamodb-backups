@@ -18,8 +18,12 @@
     "aws lambda",
     "aws dynamodb"
   ],
+  "jest": {
+    "verbose": true
+  },
   "scripts": {
-    "build": "babel lib/dynamodbAutoBackups.js -o index.js"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "author": "unly",
   "license": "MIT",
@@ -31,6 +35,8 @@
     "babel-preset-env": "1.7.0",
     "bluebird": "3.5.3",
     "chalk": "2.4.1",
+    "eslint": "5.9.0",
+    "jest": "23.6.0",
     "semver": "5.6.0",
     "uuid": "3.3.2"
   },
@@ -38,6 +44,5 @@
     "axios": ">= 0.x.x",
     "lodash": ">= 4.x.x",
     "moment": ">= 2.x.x"
-  },
-  "dependencies": {}
+  }
 }

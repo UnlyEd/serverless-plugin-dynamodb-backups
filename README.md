@@ -47,9 +47,9 @@ plugins:
 Create a file:
 
 ```javascript
-import { dynamodbAutoBackups } from 'serverless-plugin-db-backups';
+import dynamodbAutoBackups from 'serverless-plugin-db-backups';
 
-export const handler = dynamodbAutoBackups(event, context);
+export const handler = dynamodbAutoBackups;
 ```
 
 > Step 3: Custom config `serverless.yml`
@@ -67,7 +67,7 @@ custom:
 
 ```yaml
 provider:
-    .....
+    iamRoleStatements:
     - Effect: "Allow"
       Action:
       - dynamodb:ListTables
@@ -97,3 +97,10 @@ provider:
   > **optional** - Setting this value to true will enable cleanup of old backups. See the below option, backupRetentionDays, to specify the retention period. By default, backup removal is disabled.
 * `backupRetentionDays`
   > **optional** - Specify the number of days to retain old snapshots. For example, setting the value to 2 will remove all snapshots that are older then 2 days from today.
+* `backupType` (default ALL)
+  > **optional** - The backups from the table specified by BackupType are listed.
+
+   Where backupType can be:
+   * `USER` - On-demand backup created by you.
+   * `SYSTEM` - On-demand backup automatically created by DynamoDB.
+   * `ALL` - All types of on-demand backups (USER and SYSTEM).
