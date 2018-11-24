@@ -2,7 +2,7 @@
   "parserOptions": {
     "ecmaVersion": 2017
   },
-  "extends": "eslint:recommended",
+  "extends": "airbnb-base",
   "rules": {
     "semi": [
       "error",
@@ -23,6 +23,12 @@
       "error",
       2
     ],
+    "arrow-parens": [
+      "error",
+      "always"
+    ],
+    "max-len": ["warn", 160],
+    "strict": "off",
     "no-console": "off",
     "allowArrowFunctions": true,
     "no-unused-vars": "off"
