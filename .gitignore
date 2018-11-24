@@ -84,6 +84,9 @@ fabric.properties
 node_modules
 jspm_packages
 
+# Forgotten tmp files
+yarn-error.log
+
 # Serverless directories
 .serverless
 .webpack
