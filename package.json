@@ -9,14 +9,12 @@
   },
   "homepage": "https://bitbucket.org/studylink_team/serverless-plugin-db-backups",
   "keywords": [
-    "serverless dynamodb backups",
-    "serverless framework plugin",
-    "serverless backups",
-    "serverless plugins",
+    "serverless",
+    "framework",
+    "plugin",
+    "backups",
     "aws",
-    "aws dynamodb backups",
-    "aws dynamodb plugin",
-    "aws dynamodb"
+    "dynamodb"
   ],
   "jest": {
     "verbose": true
