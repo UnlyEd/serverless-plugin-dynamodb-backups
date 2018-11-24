@@ -1,7 +1,7 @@
 {
-  "name": "serverless-plugin-db-backups",
+  "name": "@unly/serverless-plugin-db-backups",
   "version": "1.0.0",
-  "description": "Serverless plugin db backups - Automatically create backups on dynamodb",
+  "description": "Serverless plugin - Automatically creates DynamoDB backups",
   "main": "index.js",
   "repository": "https://bitbucket.org/studylink_team/serverless-plugin-db-backups.git",
   "bugs": {
@@ -13,17 +13,17 @@
     "serverless framework plugin",
     "serverless backups",
     "serverless plugins",
-    "lambda",
     "aws",
-    "aws lambda",
+    "aws dynamodb backups",
+    "aws dynamodb plugin",
     "aws dynamodb"
   ],
   "jest": {
     "verbose": true
   },
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "test": "jest --watch",
+    "test:watch": "jest --coverage --runInBand"
   },
   "author": "unly",
   "license": "MIT",
