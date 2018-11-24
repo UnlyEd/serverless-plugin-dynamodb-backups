@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "Serverless plugin - Automatically creates DynamoDB backups",
   "main": "index.js",
-  "repository": "https://bitbucket.org/studylink_team/serverless-plugin-db-backups.git",
+  "repository": "https://github.com/UnlyEd/serverless-plugin-db-backups.git",
   "bugs": {
-    "url": "https://bitbucket.org/studylink_team/serverless-plugin-db-backups/issues"
+    "url": "https://github.com/UnlyEd/serverless-plugin-db-backups/issues"
   },
-  "homepage": "https://bitbucket.org/studylink_team/serverless-plugin-db-backups",
+  "homepage": "https://github.com/UnlyEd/serverless-plugin-db-backups",
   "keywords": [
     "serverless",
     "framework",
