@@ -31,7 +31,8 @@
     "strict": "off",
     "no-console": "off",
     "allowArrowFunctions": true,
-    "no-unused-vars": "off"
+    "no-unused-vars": "off",
+    "import/prefer-default-export": false
   },
   "env": {
     "jest": true,
