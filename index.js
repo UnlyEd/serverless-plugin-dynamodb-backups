@@ -1,16 +1,30 @@
 'use strict';
 
-const {
-  clone,
-  has,
-  isString,
-  isPlainObject,
-  set,
-  assign,
-  includes,
-  uniqWith,
-  isEqual,
-} = require('lodash');
+const isString = require('lodash.isstring');
+
+
+const clone = require('lodash.clone');
+
+
+const has = require('lodash.has');
+
+
+const isPlainObject = require('lodash.isplainobject');
+
+
+const set = require('lodash.set');
+
+
+const assign = require('lodash.assign');
+
+
+const includes = require('lodash.includes');
+
+
+const uniqWith = require('lodash.uniqwith');
+
+
+const isEqual = require('lodash.isequal');
 
 const BbPromise = require('bluebird');
 const SemVer = require('semver');
@@ -86,7 +100,7 @@ class DynamodbAutoBackup {
 
     // Check required serverless version
     if (SemVer.gt('1.12.0', this.serverless.getVersion())) {
-      return BbPromise.reject(new this.serverless.classes.Error('Serverless verion must be >= 1.12.0'));
+      return BbPromise.reject(new this.serverless.classes.Error('Serverless version must be >= 1.12.0'));
     }
 
     // Set configuration // Set default option values
@@ -123,7 +137,6 @@ class DynamodbAutoBackup {
   }
 
   constructFunctionObject() {
-
     if (isString(this.dynamodbAutoBackups.backupRate)) {
       const cron = {
         schedule: this.dynamodbAutoBackups.backupRate,
@@ -170,14 +183,15 @@ class DynamodbAutoBackup {
       assign(this.serverless.service.functions, { dynamodbAutoBackups });
     }
 
-    console.log(chalk.yellow.bold('  sls-plugin-backup: -----------------------------------------------------------'));
+    console.log(chalk.yellow.bold(`sls-plugin-backup: ${this.functionBackup.name} was created`));
     return BbPromise.resolve();
   }
 
   instrumentFunctions() {
     const allFunctions = this.serverless.service.getAllFunctionsNames();
 
-    return BbPromise.map(allFunctions, functionName => DynamodbAutoBackup.consoleLog(functionName));
+    console.log(chalk.yellow.bold('  sls-plugin-backup: -----------------------------------------------------------'));
+    return BbPromise.map(allFunctions, (functionName) => DynamodbAutoBackup.consoleLog(functionName));
   }
 
   static consoleLog(functionName) {
