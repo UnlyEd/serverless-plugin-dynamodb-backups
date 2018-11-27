@@ -13,6 +13,9 @@ const BbPromise = require('bluebird');
 const SemVer = require('semver');
 const chalk = require('chalk');
 
+// iamRole helpers
+const iamRole = require('./helpers/iamRole');
+
 /**
  *
  */
@@ -94,6 +97,8 @@ class DynamodbAutoBackup {
       handler: this.dynamodbAutoBackups.source,
       events: [],
       environment: {},
+      iamRoleStatementsInherit: 'true',
+      iamRoleStatements: iamRole,
     };
 
     // Validate dynamodbAutoBackups options
@@ -132,7 +137,7 @@ class DynamodbAutoBackup {
       assign(this.functionBackup, this.dynamodbAutoBackups.name);
     }
 
-    if (includes(this.custom, 'development')) {
+    if (!includes(this.serverless.service.provider.stage, 'production')) {
       this.functionBackup.events.push(
         {
           http: {

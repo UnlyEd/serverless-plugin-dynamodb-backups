@@ -20,31 +20,30 @@ We officially support **Node.js 6.10** and **Node.js 8.10**.
 * Report Error on slack channel _(see configuration)_
 * Delete old Backups automatically (retention) _(see configuration)_
 
-## Installation 
-
-TODO: 
-- Use npm instead!
-- show full configuration example (serverless.yml)
-
+## Installation
 
 Install the plugin
+
+NPM:
 ```bash
-yarn add https://bitbucket.org/studylink_team/serverless-plugin-db-backups.git -D
+npm install https://github.com/UnlyEd/serverless-plugin-db-backups.git -D
 ```
 
+YARN:
+```bash
+yarn add https://github.com/UnlyEd/serverless-plugin-db-backups.git -D
+```
 
 ## Usage
 
-### Step 1: Load the Plugin 
-
-**_This plugin must be the first of your list_**
+### Step 1: Load the Plugin
 
 The plugin determines your environment during deployment and adds all environment variables to your Lambda function. 
 All you need to do is to load the plugin:
 
 ```yaml
 plugins:
-  - serverless-plugin-db-backups
+  - '@unly/serverless-plugin-db-backups'
 ```
 
 ### Step 2: declare handler:
@@ -52,7 +51,7 @@ plugins:
 Create a file:
 
 ```javascript
-import dynamodbAutoBackups from 'serverless-plugin-db-backups';
+import dynamodbAutoBackups from 'serverless-plugin-db-backups/lib';
 
 export const handler = dynamodbAutoBackups;
 ```
@@ -64,34 +63,9 @@ Set the `dynamodbAutoBackups` configuration option as follows:
 ```yaml
 custom:
   dynamodbAutoBackups:
-    backupRate: 'your_schedule' # TODO Add values examples
+    backupRate: rate(5 minutes) # XXX see backupRate configuration
     source: path/to/your_handler_file
 ```
-
-### Step 4: iamRoleStatements `serverless.yml`
-
-```yaml
-provider:
-    iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-      - dynamodb:ListTables
-      - dynamodb:ListBackups
-      - dynamodb:DeleteBackup
-        Resource: "*"
-    - Effect: "Allow"
-      Action:
-      - dynamodb:CreateBackup
-      Resource:
-        Fn::Join:
-        - ":"
-        - - "arn:aws:dynamodb"
-          - Ref: 'AWS::Region'
-          - Ref: 'AWS::AccountId'
-          - "table/*"
-```
-
-TODO Add explanations
 
 ### Configuration in `serverless.yml`:
 * `source`
@@ -112,4 +86,29 @@ TODO Add explanations
    * `SYSTEM` - On-demand backup automatically created by DynamoDB.
    * `ALL` - All types of on-demand backups (USER and SYSTEM).
 
-TODO: Add example
+
+### Example Configuration:
+
+We want to create some backups every 40 minutes, delete all backups longer than 15 days, be warned if backups are not created.
+
+```yaml
+custom:
+  dynamodbAutoBackups:
+    backupRate: rate(40 minutes)
+    source: path/to/your_handler_file
+    slackWebhook: https://xxxxxxxxxxxxx
+    backupRemovalEnabled: true     # Enable backupRetentionDays
+    backupRetentionDays: 15     # if backupRemovalEnabled is not provide, then backupRetentionDays is not used
+```
+
+We want to create some backups every friday at 2:00 am, delete all backups create by USER longer than 3 days, be warned if backups are not created.
+```yaml
+custom:
+  dynamodbAutoBackups:
+    backupRate: cron(0 2 ? * FRI *) # every friday at 2:00 am
+    source: path/to/your_handler_file
+    slackWebhook: https://xxxxxxxxxxxxx
+    backupRemovalEnabled: true     # Enable backupRetentionDays
+    backupRetentionDays: 3     # if backupRemovalEnabled is not provide, then backupRetentionDays is not used
+    backupType: USER  # delete all backups created by an user, not system backups
+```
