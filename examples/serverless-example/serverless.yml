@@ -1,0 +1,63 @@
+# For full config options, check the docs:
+#    docs.serverless.com
+
+service: serverless-db-examples
+
+frameworkVersion: "=1.33.2"
+
+plugins:
+- '@unly/serverless-plugin-db-backups'
+- serverless-webpack
+- serverless-offline
+
+custom:
+  dynamodbAutoBackups:
+    backupRate: rate(5 minutes)
+    source: ./src/backups.handler
+  serverless-offline:
+    port: 3000
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+    # If you use Yarn instead of NPM in your environment, uncomment the following line.
+    packager: yarn
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: test
+  iamRoleStatements:
+  - Effect: "Allow"
+    Action:
+    - dynamodb:ListTables
+    - dynamodb:ListBackups
+    - dynamodb:DeleteBackup
+    Resource: "*"
+  - Effect: "Allow"
+    Action:
+    - dynamodb:CreateBackup
+    Resource:
+      Fn::Join:
+      - ":"
+      - - "arn:aws:dynamodb"
+        - Ref: 'AWS::Region'
+        - Ref: 'AWS::AccountId'
+        - "table/*"
+
+resources:
+  Resources:
+    BookTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Book
+        AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+        # Set the capacity
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+

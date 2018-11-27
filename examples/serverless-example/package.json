@@ -1,0 +1,31 @@
+{
+  "name": "serverless-plugin-db-examples",
+  "version": "1.0.0",
+  "description": "Examples for dynamodb backups",
+  "main": "index.js",
+  "scripts": {
+    "start": "sls offline start",
+    "deploy": "sls deploy"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "babel-core": "6.26.3",
+    "babel-loader": "7.1.5",
+    "babel-plugin-source-map-support": "1.0.0",
+    "babel-plugin-transform-runtime": "6.23.0",
+    "babel-preset-env": "1.7.0",
+    "babel-preset-stage-3": "6.24.1",
+    "serverless": "1.33.2",
+    "serverless-offline": "3.31.3",
+    "serverless-webpack": "5.2.0",
+    "webpack": "4.26.1",
+    "webpack-node-externals": "1.7.2"
+  },
+  "dependencies": {
+    "aws-sdk": "2.363.0",
+    "axios": "0.18.0",
+    "lodash.filter": "4.6.0",
+    "moment": "2.22.2"
+  }
+}
