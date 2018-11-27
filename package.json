@@ -57,7 +57,7 @@
   "peerDependencies": {
     "aws-sdk": ">= 2.x.x",
     "axios": ">= 0.x.x",
-    "moment": ">= 2.x.x",
-    "lodash.filter": ">= 4.x.x"
+    "lodash.filter": ">= 4.x.x",
+    "moment": ">= 2.x.x"
   }
 }
