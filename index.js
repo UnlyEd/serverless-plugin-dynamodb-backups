@@ -1,31 +1,14 @@
 'use strict';
 
 const isString = require('lodash.isstring');
-
-
 const clone = require('lodash.clone');
-
-
 const has = require('lodash.has');
-
-
 const isPlainObject = require('lodash.isplainobject');
-
-
 const set = require('lodash.set');
-
-
 const assign = require('lodash.assign');
-
-
 const includes = require('lodash.includes');
-
-
 const uniqWith = require('lodash.uniqwith');
-
-
 const isEqual = require('lodash.isequal');
-
 const BbPromise = require('bluebird');
 const SemVer = require('semver');
 const chalk = require('chalk');
@@ -107,7 +90,7 @@ class DynamodbAutoBackup {
     this.validated = true;
 
     this.functionBackup = {
-      name: `${this.serverless.service.service}-${this.custom.env}-dynamodbAutoBackups`,
+      name: `${this.serverless.service.service}-${this.serverless.service.provider.stage}-dynamodbAutoBackups`,
       handler: this.dynamodbAutoBackups.source,
       events: [],
       environment: {},
@@ -129,8 +112,9 @@ class DynamodbAutoBackup {
     }
 
     if (!has(this.dynamodbAutoBackups, 'slackWebhook')) {
-      DynamodbAutoBackup.consoleLog('  sls-plugin-backup: -----------------------------------------------------------');
-      DynamodbAutoBackup.consoleLog('         Warning: slackWebhook is not provide, you will not be notified of errors !');
+      console.log(chalk.yellow.bold('@unly/serverless-plugin-db-backups: -----------------------------------------------------------'));
+      console.log('         Warning: slackWebhook is not provide, you will not be notified of errors !');
+      console.log();
     }
 
     return BbPromise.resolve();
@@ -183,14 +167,15 @@ class DynamodbAutoBackup {
       assign(this.serverless.service.functions, { dynamodbAutoBackups });
     }
 
-    console.log(chalk.yellow.bold(`sls-plugin-backup: ${this.functionBackup.name} was created`));
+    console.log(chalk.yellow.bold('@unly/serverless-plugin-db-backups:'), ` ${this.functionBackup.name} was created`);
+    console.log();
     return BbPromise.resolve();
   }
 
   instrumentFunctions() {
     const allFunctions = this.serverless.service.getAllFunctionsNames();
 
-    console.log(chalk.yellow.bold('  sls-plugin-backup: -----------------------------------------------------------'));
+    console.log(chalk.yellow.bold('@unly/serverless-plugin-db-backups: -----------------------------------------------------------'));
     return BbPromise.map(allFunctions, (functionName) => DynamodbAutoBackup.consoleLog(functionName));
   }
 
