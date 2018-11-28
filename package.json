@@ -2,7 +2,7 @@
   "name": "@unly/serverless-plugin-db-backups",
   "version": "1.0.0",
   "description": "Serverless plugin - Automatically creates DynamoDB backups",
-  "main": "index.js",
+  "main": "serverless-plugin-db-backups.js",
   "repository": "https://github.com/UnlyEd/serverless-plugin-db-backups.git",
   "bugs": {
     "url": "https://github.com/UnlyEd/serverless-plugin-db-backups/issues"
@@ -17,7 +17,8 @@
     "dynamodb"
   ],
   "jest": {
-    "verbose": true
+    "verbose": true,
+    "testEnvironment": "node"
   },
   "scripts": {
     "lint": "eslint . --cache --fix",
