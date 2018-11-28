@@ -13,8 +13,8 @@ const BbPromise = require('bluebird');
 const SemVer = require('semver');
 const chalk = require('chalk');
 
-// iamRole helpers
-const iamRole = require('./helpers/iamRole');
+// iamRole Helpers
+const iamRoleStatements = require('./helpers/iamRole');
 
 /**
  *
@@ -32,40 +32,39 @@ class DynamodbAutoBackup {
         .then(this.validate)
         .then(this.constructFunctionObject)
         .then(this.populateEnv)
-        .then(this.generateBackupFunction),
+        .then(this.generateBackupFunction)
+        .then(this.manageIamRole),
 
       'before:deploy:deploy': () => BbPromise.bind(this)
         .then(this.validate)
         .then(this.constructFunctionObject)
         .then(this.populateEnv)
         .then(this.generateBackupFunction)
-        .then(this.instrumentFunctions),
+        .then(this.instrumentFunctions)
+        .then(this.manageIamRole),
 
       'before:invoke:local:invoke': () => BbPromise.bind(this)
         .then(this.validate)
         .then(this.constructFunctionObject)
         .then(this.populateEnv)
-        .then(this.generateBackupFunction),
-
-      'before:offline:start': () => BbPromise.bind(this)
-        .then(this.validate)
-        .then(this.constructFunctionObject)
-        .then(this.populateEnv)
-        .then(this.generateBackupFunction),
+        .then(this.generateBackupFunction)
+        .then(this.manageIamRole),
 
       'before:offline:start:init': () => BbPromise.bind(this)
         .then(this.validate)
         .then(this.constructFunctionObject)
         .then(this.populateEnv)
         .then(this.generateBackupFunction)
-        .then(this.instrumentFunctions),
+        .then(this.instrumentFunctions)
+        .then(this.manageIamRole),
 
       'before:remove:remove': () => BbPromise.bind(this)
         .then(this.validate)
         .then(this.constructFunctionObject)
         .then(this.populateEnv)
         .then(this.generateBackupFunction)
-        .then(this.instrumentFunctions),
+        .then(this.instrumentFunctions)
+        .then(this.manageIamRole),
     };
 
     this.configPlugin();
@@ -97,8 +96,6 @@ class DynamodbAutoBackup {
       handler: this.dynamodbAutoBackups.source,
       events: [],
       environment: {},
-      iamRoleStatementsInherit: 'true',
-      iamRoleStatements: iamRole,
     };
 
     // Validate dynamodbAutoBackups options
@@ -126,11 +123,13 @@ class DynamodbAutoBackup {
   }
 
   constructFunctionObject() {
+    const events = [];
+
     if (isString(this.dynamodbAutoBackups.backupRate)) {
       const cron = {
         schedule: this.dynamodbAutoBackups.backupRate,
       };
-      this.functionBackup.events.push(cron);
+      events.push(cron);
     }
 
     if (has(this.dynamodbAutoBackups, 'name') || isString(this.dynamodbAutoBackups.name)) {
@@ -138,7 +137,7 @@ class DynamodbAutoBackup {
     }
 
     if (!includes(this.serverless.service.provider.stage, 'production')) {
-      this.functionBackup.events.push(
+      events.push(
         {
           http: {
             path: '/cron/dynamodbAutoBackups',
@@ -147,6 +146,10 @@ class DynamodbAutoBackup {
         },
       );
     }
+
+    this.functionBackup.events = events;
+
+    return BbPromise.resolve();
   }
 
   populateEnv() {
@@ -182,6 +185,15 @@ class DynamodbAutoBackup {
 
     console.log(chalk.yellow.bold('@unly/serverless-plugin-db-backups: -----------------------------------------------------------'));
     return BbPromise.map(allFunctions, (functionName) => DynamodbAutoBackup.consoleLog(functionName));
+  }
+
+  manageIamRole() {
+    if (this.serverless.service.provider.iamRoleStatements) {
+      iamRoleStatements.map((role) => this.serverless.service.provider.iamRoleStatements.push(role));
+    } else {
+      this.serverless.service.provider.iamRoleStatements = iamRoleStatements;
+    }
+    return BbPromise.resolve();
   }
 
   static consoleLog(functionName) {
