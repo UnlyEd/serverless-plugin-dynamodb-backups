@@ -114,7 +114,7 @@ class DynamodbAutoBackup {
     }
 
     this.functionBackup = {
-      name: `${this.serverless.service.service}-${this.serverless.service.provider.stage}-dynamodbAutoBackups`,
+      name: this.dynamodbAutoBackups.name || `${this.serverless.service.service}-${this.serverless.service.provider.stage}-dynamodbAutoBackups`,
       handler: this.dynamodbAutoBackups.source,
       events: [],
       environment: {},
@@ -131,10 +131,6 @@ class DynamodbAutoBackup {
         schedule: this.dynamodbAutoBackups.backupRate,
       };
       events.push(cron);
-    }
-
-    if (has(this.dynamodbAutoBackups, 'name') || isString(this.dynamodbAutoBackups.name)) {
-      assign(this.functionBackup, this.dynamodbAutoBackups.name);
     }
 
     if (!includes(this.serverless.service.provider.stage, 'production')) {
