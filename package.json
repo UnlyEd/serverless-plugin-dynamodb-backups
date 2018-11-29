@@ -22,7 +22,7 @@
   },
   "scripts": {
     "lint": "eslint . --cache --fix",
-    "test": "jest --watch",
+    "test": "jest",
     "test:watch": "jest --coverage --runInBand"
   },
   "author": "unly",

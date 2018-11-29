@@ -91,12 +91,6 @@ class DynamodbAutoBackup {
     // Set configuration // Set default option values
     this.validated = true;
 
-    this.functionBackup = {
-      name: `${this.serverless.service.service}-${this.serverless.service.provider.stage}-dynamodbAutoBackups`,
-      handler: this.dynamodbAutoBackups.source,
-      events: [],
-      environment: {},
-    };
 
     // Validate dynamodbAutoBackups options
     if (!this.dynamodbAutoBackups.source) {
@@ -118,6 +112,13 @@ class DynamodbAutoBackup {
       console.log('         Warning: slackWebhook is not provide, you will not be notified of errors !');
       console.log();
     }
+
+    this.functionBackup = {
+      name: `${this.serverless.service.service}-${this.serverless.service.provider.stage}-dynamodbAutoBackups`,
+      handler: this.dynamodbAutoBackups.source,
+      events: [],
+      environment: {},
+    };
 
     return BbPromise.resolve();
   }
