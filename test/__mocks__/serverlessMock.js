@@ -33,6 +33,14 @@ const customs = [
       backupRetentionDays: 15
     },
   },
+  {
+    dynamodbAutoBackups: {
+      backupRate: 'rate(5 minutes)',
+      source: 'src/backups.handler',
+      backupRemovalEnabled: true,
+      backupRetentionDays: 15
+    },
+  },
 ]
 
 const serverless = (number) => {

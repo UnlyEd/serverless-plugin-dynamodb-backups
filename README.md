@@ -72,6 +72,8 @@ custom:
   > **required** - path to your handler function.
 * `backupRate`
   > **required** - The schedule on which you want to backup your table. You can use either `rate` syntax (`rate(1 hour)`) or `cron` syntax (`cron(0 12 * * ? *)`). See [here](https://serverless.com/framework/docs/providers/aws/events/schedule/) for more details on configuration.
+* `name`
+  > **optional** - automatically set, but you could provide your own name for this lambda.
 * `slackWebhook`
   > **optional** - An HTTPS endpoint for an [incoming webhook](https://api.slack.com/incoming-webhooks) to Slack. If provided, it will error messages to a Slack channel when it runs.
 * `backupRemovalEnabled`

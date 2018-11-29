@@ -1,11 +1,12 @@
 const serverless = require('./__mocks__/serverlessMock');
-
 const DynamodbBackups = require('../serverless-plugin-db-backups');
 
 describe('@unly/serverless-plugin-db-backups init', () => {
-  // disable console
-  console.warn = jest.fn();
-  console.log = jest.fn();
+
+  global.console = {
+    warn: jest.fn(),
+    log: jest.fn(),
+  };
 
   let slsPlugin;
   let step = 0;
@@ -65,7 +66,43 @@ describe('@unly/serverless-plugin-db-backups init', () => {
 
     await afterPackageInit();
 
+    expect(slsPlugin.serverless.service.provider.iamRoleStatements.length).toEqual(2);
     expect(slsPlugin.serverless.service.functions.dynamodbAutoBackups).toMatchObject(slsPlugin.functionBackup);
+
+  });
+
+  test('if iamRoleStatements in serverles should merge it', async () => {
+    slsPlugin.serverless.service.provider.iamRoleStatements = [
+      {
+        Effect: 'Allow',
+        Action:
+          [
+            'dynamodb:ListTables',
+            'dynamodb:ListBackups',
+            'dynamodb:DeleteBackup',
+          ],
+        Resource: '*',
+      },
+    ];
+
+    const beforePackageInit = slsPlugin.hooks['before:package:initialize'];
+    const afterPackageInit = slsPlugin.hooks['after:package:initialize'];
+
+    expect(slsPlugin.validated).toBeFalsy();
+
+    await beforePackageInit();
+
+    expect(global.console.log).toHaveBeenCalled();
+
+    expect(slsPlugin.validated).toEqual(true);
+    expect(slsPlugin.functionBackup).toHaveProperty('name');
+    expect(slsPlugin.functionBackup).toHaveProperty('events');
+    expect(slsPlugin.functionBackup).toHaveProperty('handler');
+    expect(slsPlugin.functionBackup).toHaveProperty('environment');
+
+    await afterPackageInit();
+
+    expect(slsPlugin.serverless.service.provider.iamRoleStatements.length).toEqual(3);
 
   });
 });
