@@ -15,14 +15,7 @@ const customs = [
   {
     dynamodbAutoBackups: {
       source: 'src/backups.handler',
-      backupRemovalEnabled: true
-    },
-  },
-  {
-    dynamodbAutoBackups: {
-      backupRate: 'rate(5 minutes)',
-      source: 'src/backups.handler',
-      backupRemovalEnabled: true
+      backupRemovalEnabled: true,
     },
   },
   {
@@ -30,7 +23,6 @@ const customs = [
       backupRate: 'rate(5 minutes)',
       source: 'src/backups.handler',
       backupRemovalEnabled: true,
-      backupRetentionDays: 15
     },
   },
   {
@@ -38,10 +30,18 @@ const customs = [
       backupRate: 'rate(5 minutes)',
       source: 'src/backups.handler',
       backupRemovalEnabled: true,
-      backupRetentionDays: 15
+      backupRetentionDays: 15,
     },
   },
-]
+  {
+    dynamodbAutoBackups: {
+      backupRate: 'rate(5 minutes)',
+      source: 'src/backups.handler',
+      backupRemovalEnabled: true,
+      backupRetentionDays: 15,
+    },
+  },
+];
 
 const serverless = (number) => {
   const sls = new Serverless();

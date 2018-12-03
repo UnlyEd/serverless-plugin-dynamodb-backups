@@ -2,7 +2,6 @@ const serverless = require('./__mocks__/serverlessMock');
 const DynamodbBackups = require('../serverless-plugin-db-backups');
 
 describe('@unly/serverless-plugin-db-backups init', () => {
-
   global.console = {
     warn: jest.fn(),
     log: jest.fn(),
@@ -50,7 +49,6 @@ describe('@unly/serverless-plugin-db-backups init', () => {
   });
 
   test('should provide function dynamodbAutoBackups', async () => {
-
     const beforePackageInit = slsPlugin.hooks['before:package:initialize'];
     const afterPackageInit = slsPlugin.hooks['after:package:initialize'];
 
@@ -68,7 +66,6 @@ describe('@unly/serverless-plugin-db-backups init', () => {
 
     expect(slsPlugin.serverless.service.provider.iamRoleStatements.length).toEqual(2);
     expect(slsPlugin.serverless.service.functions.dynamodbAutoBackups).toMatchObject(slsPlugin.functionBackup);
-
   });
 
   test('if iamRoleStatements in serverles should merge it', async () => {
@@ -103,6 +100,5 @@ describe('@unly/serverless-plugin-db-backups init', () => {
     await afterPackageInit();
 
     expect(slsPlugin.serverless.service.provider.iamRoleStatements.length).toEqual(3);
-
   });
 });
