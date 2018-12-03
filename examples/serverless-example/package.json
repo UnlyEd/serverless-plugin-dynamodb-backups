@@ -1,7 +1,7 @@
 {
   "name": "serverless-plugin-db-examples",
   "version": "1.0.0",
-  "description": "Examples for dynamodb backups",
+  "description": "Usage example of the serverless-plugin-dynamodb-backups plugin",
   "main": "index.js",
   "scripts": {
     "start": "sls offline start",

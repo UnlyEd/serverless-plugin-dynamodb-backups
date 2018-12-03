@@ -100,7 +100,7 @@ custom:
     source: path/to/your_handler_file
     slackWebhook: https://xxxxxxxxxxxxx
     backupRemovalEnabled: true     # Enable backupRetentionDays
-    backupRetentionDays: 15     # if backupRemovalEnabled is not provide, then backupRetentionDays is not used
+    backupRetentionDays: 15     # if backupRemovalEnabled is not provided, then backupRetentionDays is not used
 ```
 
 We want to create some backups every friday at 2:00 am, delete all backups create by USER longer than 3 days, be warned if backups are not created.

@@ -28,7 +28,7 @@ provider:
   runtime: nodejs8.10
   stage: development
   region: eu-west-1
-  profile: sandbox
+  profile: # Your AWS PROFILE HERE (define in ~/.aws)
 
 # Create dynamodb table on aws for test
 resources:

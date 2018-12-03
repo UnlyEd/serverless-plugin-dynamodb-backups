@@ -22,8 +22,9 @@
   },
   "scripts": {
     "lint": "eslint . --cache --fix",
-    "test": "jest",
-    "test:watch": "jest --coverage --runInBand"
+    "test:once": "jest",
+    "test": "jest --watch",
+    "coverage": "jest --coverage"
   },
   "author": "unly",
   "license": "MIT",
