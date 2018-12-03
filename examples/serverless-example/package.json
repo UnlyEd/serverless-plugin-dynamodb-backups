@@ -19,10 +19,5 @@
     "serverless-webpack": "5.2.0",
     "webpack": "4.26.1",
     "webpack-node-externals": "1.7.2"
-  },
-  "dependencies": {
-    "axios": "0.18.0",
-    "lodash.filter": "4.6.0",
-    "moment": "2.22.2"
   }
 }

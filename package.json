@@ -29,10 +29,12 @@
   "author": "unly",
   "license": "MIT",
   "dependencies": {
+    "axios": "0.18.0",
     "bluebird": "3.5.3",
     "chalk": "2.4.1",
     "lodash.assign": "4.2.0",
     "lodash.clone": "4.5.0",
+    "lodash.filter": "4.6.0",
     "lodash.has": "4.5.2",
     "lodash.includes": "4.3.0",
     "lodash.isequal": "4.5.0",
@@ -45,7 +47,6 @@
   },
   "devDependencies": {
     "aws-sdk": "2.352.0",
-    "axios": "0.18.0",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.3",
     "babel-preset-env": "1.7.0",
@@ -53,13 +54,9 @@
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-plugin-import": "2.14",
     "jest": "23.6.0",
-    "lodash.filter": "4.6.0",
     "uuid": "3.3.2"
   },
   "peerDependencies": {
-    "aws-sdk": ">= 2.x.x",
-    "axios": ">= 0.x.x",
-    "lodash.filter": ">= 4.x.x",
-    "moment": ">= 2.x.x"
+    "aws-sdk": ">= 2.x.x"
   }
 }
