@@ -12,7 +12,7 @@ plugins:
 
 custom:
   dynamodbAutoBackups: # @unly/serverless-plugin-db-backups configuration (see README for more)
-    backupRate: rate(5 minutes)
+    backupRate: rate(1 minute)
     source: src/backups.handler
     name: serverless-plugin-db-backups
   serverless-offline:
@@ -28,7 +28,7 @@ provider:
   runtime: nodejs8.10
   stage: development
   region: eu-west-1
-  profile: # Your AWS PROFILE HERE (define in ~/.aws)
+  profile: sandbox # TODO You need to either remove this or use your profile
 
 # Create dynamodb table on aws for test
 resources:
