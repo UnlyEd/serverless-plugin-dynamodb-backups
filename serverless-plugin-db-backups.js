@@ -99,7 +99,6 @@ class DynamodbAutoBackup {
     // Set configuration // Set default option values
     this.validated = true;
 
-
     // Validate dynamodbAutoBackups options
     if (!this.dynamodbAutoBackups.source) {
       return BbPromise.reject(new this.serverless.classes.Error('dynamodbAutoBackups source must be set !'));
@@ -122,6 +121,7 @@ class DynamodbAutoBackup {
     }
 
     this.functionBackup = {
+      name: this.dynamodbAutoBackups.name || 'dynamodbAutoBackups',
       handler: this.dynamodbAutoBackups.source,
       events: [],
       environment: {},
@@ -138,17 +138,6 @@ class DynamodbAutoBackup {
         schedule: this.dynamodbAutoBackups.backupRate,
       };
       events.push(cron);
-    }
-
-    if (!includes(this.serverless.service.provider.stage, 'production')) {
-      events.push(
-        {
-          http: {
-            path: '/cron/dynamodbAutoBackups',
-            method: 'get',
-          },
-        },
-      );
     }
 
     this.functionBackup.events = events;
@@ -176,7 +165,7 @@ class DynamodbAutoBackup {
     dynamodbAutoBackups.events = uniqWith(this.functionBackup.events, isEqual);
 
     if (isPlainObject(dynamodbAutoBackups)) {
-      assign(this.serverless.service.functions, { [ this.dynamodbAutoBackups.name || 'dynamodbAutoBackups' ]: dynamodbAutoBackups });
+      assign(this.serverless.service.functions, { [this.dynamodbAutoBackups.name || 'dynamodbAutoBackups']: dynamodbAutoBackups });
     }
 
     console.log(chalk.yellow.bold('@unly/serverless-plugin-db-backups:'), ` ${this.functionBackup.name} was created`);
