@@ -2,24 +2,24 @@ const filter = require('lodash.filter');
 const moment = require('moment');
 const AWS = require('aws-sdk');
 
-export const handler = async (event, context) => {
-  /**
-   * @param TableName
-   * @returns {Promise<*|Array>}
-   */
-  const listBackups = async (TableName) => {
-    const Dynamodb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
-    const TimeRangeUpperBound = moment().subtract(2, 'days').toISOString();
-    const params = {
-      TableName,
-      BackupType: 'USER',
-      TimeRangeUpperBound,
-    };
-    const data = await Dynamodb.listBackups(params).promise();
-
-    console.log(data);
-    return data.BackupSummaries || [];
+/**
+ * @param TableName
+ * @returns {Promise<*|Array>}
+ */
+const listBackups = async (TableName) => {
+  const Dynamodb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
+  const TimeRangeLowerBound = moment().subtract(2, 'days').toISOString();
+  const params = {
+    TableName,
+    BackupType: 'USER',
+    TimeRangeLowerBound,
   };
+  const data = await Dynamodb.listBackups(params).promise();
+
+  return data.BackupSummaries || [];
+};
+
+export const handler = async (event, context) => {
 
   const data = await listBackups(process.env.TABLE_NAME);
 
