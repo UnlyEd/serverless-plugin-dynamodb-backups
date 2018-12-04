@@ -12,7 +12,7 @@ plugins:
 
 custom:
   dynamodbAutoBackups: # @unly/serverless-plugin-db-backups configuration (see README for more)
-    backupRate: rate(1 minute)
+    backupRate: rate(5 minutes)
     source: src/backups.handler
     name: serverless-plugin-db-backups
   serverless-offline:

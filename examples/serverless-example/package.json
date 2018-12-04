@@ -6,9 +6,8 @@
   "scripts": {
     "start": "sls offline start",
     "deploy": "sls deploy",
-    "log:listBackups": "sls logs -f listBackups -t",
-    "log:cron": "sls logs -f serverless-plugin-db-backups -t"
-
+    "logs:listBackups": "sls logs -f listBackups -t",
+    "logs:backups": "sls logs -f serverless-plugin-db-backups -t"
   },
   "author": "@unlyEd",
   "license": "MIT",
@@ -24,7 +23,7 @@
     "webpack-node-externals": "1.7.2"
   },
   "dependencies": {
-    "@unly/serverless-plugin-db-backups": "1.0.0-alpha.1",
+    "@unly/serverless-plugin-db-backups": "1.0.0-alpha.2",
     "lodash.filter": "4.5.1",
     "moment": "2.19.0"
   }

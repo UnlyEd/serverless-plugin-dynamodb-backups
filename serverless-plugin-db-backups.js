@@ -122,7 +122,6 @@ class DynamodbAutoBackup {
     }
 
     this.functionBackup = {
-      name: this.dynamodbAutoBackups.name || `${this.serverless.service.service}-${this.serverless.service.provider.stage}-dynamodbAutoBackups`,
       handler: this.dynamodbAutoBackups.source,
       events: [],
       environment: {},
@@ -177,7 +176,7 @@ class DynamodbAutoBackup {
     dynamodbAutoBackups.events = uniqWith(this.functionBackup.events, isEqual);
 
     if (isPlainObject(dynamodbAutoBackups)) {
-      assign(this.serverless.service.functions, { dynamodbAutoBackups });
+      assign(this.serverless.service.functions, { [ this.dynamodbAutoBackups.name || 'dynamodbAutoBackups' ]: dynamodbAutoBackups });
     }
 
     console.log(chalk.yellow.bold('@unly/serverless-plugin-db-backups:'), ` ${this.functionBackup.name} was created`);

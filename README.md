@@ -26,12 +26,12 @@ Install the plugin
 
 NPM:
 ```bash
-npm install https://github.com/UnlyEd/serverless-plugin-db-backups.git -D
+npm install @unly/serverless-plugin-db-backups
 ```
 
 YARN:
 ```bash
-yarn add https://github.com/UnlyEd/serverless-plugin-db-backups.git -D
+yarn add @unly/serverless-plugin-db-backups
 ```
 
 ## Usage
