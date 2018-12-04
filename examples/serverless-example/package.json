@@ -5,10 +5,13 @@
   "main": "index.js",
   "scripts": {
     "start": "sls offline start",
-    "deploy": "sls deploy"
+    "deploy": "sls deploy",
+    "log:listBackups": "sls logs -f listBackups -t",
+    "log:cron": "sls logs -f serverless-plugin-db-backups -t"
+
   },
-  "author": "",
-  "license": "ISC",
+  "author": "@unlyEd",
+  "license": "MIT",
   "devDependencies": {
     "aws-sdk": "2.363.0",
     "babel-core": "6.26.3",
@@ -19,5 +22,10 @@
     "serverless-webpack": "5.2.0",
     "webpack": "4.26.1",
     "webpack-node-externals": "1.7.2"
+  },
+  "dependencies": {
+    "@unly/serverless-plugin-db-backups": "1.0.0-alpha.1",
+    "lodash.filter": "4.5.1",
+    "moment": "2.19.0"
   }
 }

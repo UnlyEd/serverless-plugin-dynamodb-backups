@@ -29,6 +29,16 @@ provider:
   stage: development
   region: eu-west-1
   profile: sandbox # TODO You need to either remove this or use your profile
+  environment:
+    TABLE_NAME: Book
+
+functions:
+  listBackups:
+    handler: src/listBackups.handler
+    events:
+      - http:
+          method: GET
+          path: /listBackups
 
 # Create dynamodb table on aws for test
 resources:
