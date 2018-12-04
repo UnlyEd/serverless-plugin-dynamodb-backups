@@ -65,6 +65,14 @@ class DynamodbAutoBackup {
         .then(this.generateBackupFunction)
         .then(this.instrumentFunctions)
         .then(this.manageIamRole),
+
+      'before:logs:logs': () => BbPromise.bind(this)
+        .then(this.validate)
+        .then(this.constructFunctionObject)
+        .then(this.populateEnv)
+        .then(this.generateBackupFunction)
+        .then(this.instrumentFunctions)
+        .then(this.manageIamRole),
     };
 
     this.configPlugin();

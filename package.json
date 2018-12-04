@@ -54,7 +54,7 @@
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-plugin-import": "2.14",
     "jest": "23.6.0",
-    "uuid": "3.3.2"
+    "serverless": "1.33.2"
   },
   "peerDependencies": {
     "aws-sdk": ">= 2.x.x"
