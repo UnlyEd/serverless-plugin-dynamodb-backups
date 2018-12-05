@@ -114,3 +114,10 @@ custom:
     backupRetentionDays: 3     # if backupRemovalEnabled is not provide, then backupRetentionDays is not used
     backupType: USER  # delete all backups created by an user, not system backups
 ```
+
+### Example
+
+To test this plugin, you can clone this repository.
+Go to examples / serverless-example, and follow the README.
+
+enjoy :)
