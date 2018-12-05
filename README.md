@@ -26,12 +26,12 @@ Install the plugin
 
 NPM:
 ```bash
-npm install @unly/serverless-plugin-db-backups
+npm install @unly/serverless-plugin-dynamodb-backups
 ```
 
 YARN:
 ```bash
-yarn add @unly/serverless-plugin-db-backups
+yarn add @unly/serverless-plugin-dynamodb-backups
 ```
 
 ## Usage
@@ -43,7 +43,7 @@ All you need to do is to load the plugin:
 
 ```yaml
 plugins:
-  - '@unly/serverless-plugin-db-backups'
+  - '@unly/serverless-plugin-dynamodb-backups'
 ```
 
 ### Step 2: declare handler:

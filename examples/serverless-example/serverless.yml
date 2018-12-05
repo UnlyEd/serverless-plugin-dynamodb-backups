@@ -6,13 +6,13 @@ service: serverless-db-examples
 frameworkVersion: "=1.33.2"
 
 plugins:
-- '@unly/serverless-plugin-db-backups'
+- '@unly/serverless-plugin-dynamodb-backups'
 - serverless-webpack
 - serverless-offline
 
 custom:
-  dynamodbAutoBackups: # @unly/serverless-plugin-db-backups configuration (see README for more)
-    backupRate: rate(5 minutes)
+  dynamodbAutoBackups: # @unly/serverless-plugin-dynamodb-backups configuration (see README for more)
+    backupRate: rate(1 minute)
     source: src/backups.handler
     name: serverless-plugin-db-backups
   serverless-offline:

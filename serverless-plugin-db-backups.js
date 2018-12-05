@@ -115,7 +115,7 @@ class DynamodbAutoBackup {
     }
 
     if (!has(this.dynamodbAutoBackups, 'slackWebhook')) {
-      console.log(chalk.yellow.bold('@unly/serverless-plugin-db-backups: -----------------------------------------------------------'));
+      console.log(chalk.yellow.bold('@unly/serverless-plugin-dynamodb-backups: -----------------------------------------------------------'));
       console.log('         Warning: slackWebhook is not provide, you will not be notified of errors !');
       console.log();
     }
@@ -168,7 +168,7 @@ class DynamodbAutoBackup {
       assign(this.serverless.service.functions, { [this.dynamodbAutoBackups.name || 'dynamodbAutoBackups']: dynamodbAutoBackups });
     }
 
-    console.log(chalk.yellow.bold('@unly/serverless-plugin-db-backups:'), ` ${this.functionBackup.name} was created`);
+    console.log(chalk.yellow.bold('@unly/serverless-plugin-dynamodb-backups:'), ` ${this.functionBackup.name} was created`);
     console.log();
     return BbPromise.resolve();
   }
@@ -176,7 +176,7 @@ class DynamodbAutoBackup {
   instrumentFunctions() {
     const allFunctions = this.serverless.service.getAllFunctionsNames();
 
-    console.log(chalk.yellow.bold('@unly/serverless-plugin-db-backups: -----------------------------------------------------------'));
+    console.log(chalk.yellow.bold('@unly/serverless-plugin-dynamodb-backups: -----------------------------------------------------------'));
     return BbPromise.map(allFunctions, (functionName) => DynamodbAutoBackup.consoleLog(functionName));
   }
 

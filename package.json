@@ -1,5 +1,5 @@
 {
-  "name": "@unly/serverless-plugin-db-backups",
+  "name": "@unly/serverless-plugin-dynamodb-backups",
   "version": "1.0.0-alpha.4",
   "description": "Serverless plugin - Automatically creates DynamoDB backups",
   "main": "serverless-plugin-db-backups.js",

@@ -1,51 +1,43 @@
 const Serverless = require('serverless');
 
+const scenarios = {
+  classic: {
+    dynamodbAutoBackups: {
+      backupRate: 'rate(5 minutes)',
+      source:
+        'src/backups.handler',
+    }
+    ,
+  },
+  empty: {
+    dynamodbAutoBackups: {}
+    ,
+  },
+  missed: {
+    dynamodbAutoBackups: {
+      source: 'src/backups.handler',
+      backupRemovalEnabled:
+        true,
+    }
+    ,
+  },
+  all: {
+    dynamodbAutoBackups: {
+      backupRate: 'rate(5 minutes)',
+      source:
+        'src/backups.handler',
+      backupRemovalEnabled:
+        true,
+      backupRetentionDays:
+        15,
+    }
+    ,
+  },
+};
 
-const customs = [
-  {
-    dynamodbAutoBackups: {
-      backupRate: 'rate(5 minutes)',
-      source: 'src/backups.handler',
-    },
-  },
-  {
-    dynamodbAutoBackups: {
-    },
-  },
-  {
-    dynamodbAutoBackups: {
-      source: 'src/backups.handler',
-      backupRemovalEnabled: true,
-    },
-  },
-  {
-    dynamodbAutoBackups: {
-      backupRate: 'rate(5 minutes)',
-      source: 'src/backups.handler',
-      backupRemovalEnabled: true,
-    },
-  },
-  {
-    dynamodbAutoBackups: {
-      backupRate: 'rate(5 minutes)',
-      source: 'src/backups.handler',
-      backupRemovalEnabled: true,
-      backupRetentionDays: 15,
-    },
-  },
-  {
-    dynamodbAutoBackups: {
-      backupRate: 'rate(5 minutes)',
-      source: 'src/backups.handler',
-      backupRemovalEnabled: true,
-      backupRetentionDays: 15,
-    },
-  },
-];
-
-const serverless = (number) => {
+const serverless = (scenarioName) => {
   const sls = new Serverless();
-  sls.service.custom = customs[number];
+  sls.service.custom = scenarios[scenarioName];
   return sls;
 };
 

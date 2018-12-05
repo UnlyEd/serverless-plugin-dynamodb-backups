@@ -9,7 +9,7 @@
     "logs:listBackups": "sls logs -f listBackups -t",
     "logs:backups": "sls logs -f serverless-plugin-db-backups -t"
   },
-  "author": "@unlyEd",
+  "author": "unly",
   "license": "MIT",
   "devDependencies": {
     "aws-sdk": "2.363.0",
@@ -25,6 +25,6 @@
   "dependencies": {
     "@unly/serverless-plugin-db-backups": "1.0.0-alpha.4",
     "lodash.filter": "4.5.1",
-    "moment": "2.19.0"
+    "moment": "2.22.1"
   }
 }

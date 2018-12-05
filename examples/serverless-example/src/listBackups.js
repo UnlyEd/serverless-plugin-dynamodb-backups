@@ -20,7 +20,6 @@ const listBackups = async (TableName) => {
 };
 
 export const handler = async (event, context) => {
-
   const data = await listBackups(process.env.TABLE_NAME);
 
   const backupsFiltered = filter(data, ['BackupType', 'USER']);

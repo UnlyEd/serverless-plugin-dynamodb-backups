@@ -1,21 +1,16 @@
 const serverless = require('./__mocks__/serverlessMock');
 const DynamodbBackups = require('../serverless-plugin-db-backups');
 
-describe('@unly/serverless-plugin-db-backups init', () => {
+describe('@unly/serverless-plugin-dynamodb-backups init', () => {
   global.console = {
     warn: jest.fn(),
     log: jest.fn(),
   };
 
   let slsPlugin;
-  let step = 0;
-
-  beforeEach(() => {
-    slsPlugin = new DynamodbBackups(serverless(step));
-    step += 1;
-  });
 
   test('check if the plugin is already validate', () => {
+    slsPlugin = new DynamodbBackups(serverless('classic'));
     slsPlugin.validate();
     expect(slsPlugin.validated).toEqual(true);
     expect(slsPlugin.dynamodbAutoBackups).toEqual({
@@ -25,6 +20,7 @@ describe('@unly/serverless-plugin-db-backups init', () => {
   });
 
   test('custom config with no key source should throw error', () => {
+    slsPlugin = new DynamodbBackups(serverless('empty'));
     try {
       slsPlugin.validate();
     } catch (err) {
@@ -33,6 +29,7 @@ describe('@unly/serverless-plugin-db-backups init', () => {
   });
 
   test('custom config with no key backupRate should throw error', () => {
+    slsPlugin = new DynamodbBackups(serverless('missed'));
     try {
       slsPlugin.validate();
     } catch (err) {
@@ -49,6 +46,8 @@ describe('@unly/serverless-plugin-db-backups init', () => {
   });
 
   test('should provide function dynamodbAutoBackups', async () => {
+    slsPlugin = new DynamodbBackups(serverless('all'));
+
     const beforePackageInit = slsPlugin.hooks['before:package:initialize'];
     const afterPackageInit = slsPlugin.hooks['after:package:initialize'];
 
@@ -69,6 +68,7 @@ describe('@unly/serverless-plugin-db-backups init', () => {
   });
 
   test('if iamRoleStatements in serverles should merge it', async () => {
+    slsPlugin = new DynamodbBackups(serverless('all'));
     slsPlugin.serverless.service.provider.iamRoleStatements = [
       {
         Effect: 'Allow',
