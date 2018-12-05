@@ -12,9 +12,12 @@ plugins:
 
 custom:
   dynamodbAutoBackups: # @unly/serverless-plugin-dynamodb-backups configuration (see README for more)
-    backupRate: rate(1 minute)
+    backupRate: rate(15 minutes)
     source: src/backups.handler
     name: serverless-plugin-db-backups
+    tableRegex: Book
+    backupRemovalEnabled: true     # Enable backupRetentionDays
+    backupRetentionDays: 1
   serverless-offline:
     port: 3000
   webpack:

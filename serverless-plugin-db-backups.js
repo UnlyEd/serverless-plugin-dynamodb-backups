@@ -6,7 +6,6 @@ const has = require('lodash.has');
 const isPlainObject = require('lodash.isplainobject');
 const set = require('lodash.set');
 const assign = require('lodash.assign');
-const includes = require('lodash.includes');
 const uniqWith = require('lodash.uniqwith');
 const isEqual = require('lodash.isequal');
 const BbPromise = require('bluebird');
@@ -156,6 +155,9 @@ class DynamodbAutoBackup {
     }
     if (has(this.dynamodbAutoBackups, 'backupType')) {
       set(this.functionBackup, 'environment.BACKUP_TYPE', String(this.dynamodbAutoBackups.backupType).toUpperCase());
+    }
+    if (has(this.dynamodbAutoBackups, 'tableRegex')) {
+      set(this.functionBackup, 'environment.TABLE_REGEX', String(this.dynamodbAutoBackups.tableRegex));
     }
     return BbPromise.resolve();
   }
