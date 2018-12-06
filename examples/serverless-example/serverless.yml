@@ -1,0 +1,61 @@
+# For full config options, check the docs:
+#    docs.serverless.com
+
+service: serverless-db-examples
+
+frameworkVersion: "=1.33.2"
+
+plugins:
+- '@unly/serverless-plugin-dynamodb-backups'
+- serverless-webpack
+- serverless-offline
+
+custom:
+  dynamodbAutoBackups: # @unly/serverless-plugin-dynamodb-backups configuration (see README for more)
+    backupRate: rate(1 minute)
+    source: src/backups.handler
+    name: serverless-plugin-db-backups
+    backupRemovalEnabled: true
+    backupRetentionDays: 1
+  serverless-offline:
+    port: 3000
+  webpack:
+    webpackConfig: ./webpack.config.js
+    includeModules: true
+    # If you use Yarn instead of NPM in your environment, comment the following line.
+    packager: yarn
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+  stage: development
+  region: eu-west-1
+  profile: sandbox # TODO You need to either remove this or use your profile
+  environment:
+    TABLE_NAME: Book
+
+functions:
+  listBackups:
+    handler: src/listBackups.handler
+    events:
+      - http:
+          method: GET
+          path: /listBackups
+
+# Create dynamodb table on aws for test
+resources:
+  Resources:
+    BookTable:
+      Type: AWS::DynamoDB::Table # see https://docs.aws.amazon.com/fr_fr/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
+      Properties:
+        TableName: Book
+        AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+        KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+

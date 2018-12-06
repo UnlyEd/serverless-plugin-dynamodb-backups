@@ -1,48 +1,67 @@
 {
-  "name": "serverless-plugin-db-backups",
+  "name": "@unly/serverless-plugin-dynamodb-backups",
   "version": "1.0.0",
-  "description": "Serverless plugin db backups - Automatically create backups on dynamodb",
-  "main": "index.js",
-  "repository": "https://bitbucket.org/studylink_team/serverless-plugin-db-backups.git",
+  "description": "Serverless plugin - Automatically creates DynamoDB backups",
+  "main": "serverless-plugin-db-backups.js",
+  "repository": "https://github.com/UnlyEd/serverless-plugin-db-backups.git",
   "bugs": {
-    "url": "https://bitbucket.org/studylink_team/serverless-plugin-db-backups/issues"
+    "url": "https://github.com/UnlyEd/serverless-plugin-db-backups/issues"
   },
-  "homepage": "https://bitbucket.org/studylink_team/serverless-plugin-db-backups",
+  "homepage": "https://github.com/UnlyEd/serverless-plugin-db-backups",
   "keywords": [
-    "serverless dynamodb backups",
-    "serverless framework plugin",
-    "serverless backups",
-    "serverless plugins",
-    "lambda",
+    "serverless",
+    "framework",
+    "plugin",
+    "backups",
     "aws",
-    "aws lambda",
-    "aws dynamodb"
+    "dynamodb"
   ],
   "jest": {
-    "verbose": true
+    "verbose": true,
+    "testEnvironment": "node"
   },
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "lint": "eslint . --cache --fix",
+    "test:once": "jest",
+    "test": "jest --watch",
+    "coverage": "jest --coverage"
   },
-  "author": "unly",
+  "author": "unlyEd",
   "license": "MIT",
+  "dependencies": {
+    "axios": "0.18.0",
+    "bluebird": "3.5.3",
+    "chalk": "2.4.1",
+    "lodash.assign": "4.2.0",
+    "lodash.clone": "4.5.0",
+    "lodash.filter": "4.6.0",
+    "lodash.has": "4.5.2",
+    "lodash.isequal": "4.5.0",
+    "lodash.isplainobject": "4.0.6",
+    "lodash.isstring": "4.0.1",
+    "lodash.set": "4.3.2",
+    "lodash.uniqwith": "4.5.0",
+    "moment": "2.22.2",
+    "semver": "5.6.0"
+  },
   "devDependencies": {
     "aws-sdk": "2.352.0",
-    "axios": "0.18.0",
     "babel-cli": "6.26.0",
     "babel-core": "6.26.3",
     "babel-preset-env": "1.7.0",
-    "bluebird": "3.5.3",
-    "chalk": "2.4.1",
     "eslint": "5.9.0",
+    "eslint-config-airbnb-base": "13.1.0",
+    "eslint-plugin-import": "2.14",
     "jest": "23.6.0",
-    "semver": "5.6.0",
-    "uuid": "3.3.2"
+    "serverless": "1.33.2"
   },
   "peerDependencies": {
-    "axios": ">= 0.x.x",
-    "lodash": ">= 4.x.x",
-    "moment": ">= 2.x.x"
-  }
+    "aws-sdk": ">= 2.x.x"
+  },
+  "files": [
+    "helpers",
+    "serverless-plugin-db-backups",
+    "lib",
+    "README"
+  ]
 }

@@ -1,0 +1,30 @@
+{
+  "name": "serverless-plugin-db-examples",
+  "version": "1.0.0",
+  "description": "Usage example of the serverless-plugin-dynamodb-backups plugin",
+  "main": "index.js",
+  "scripts": {
+    "start": "sls offline start",
+    "deploy": "sls deploy",
+    "logs:listBackups": "sls logs -f listBackups -t",
+    "logs:backups": "sls logs -f serverless-plugin-db-backups -t"
+  },
+  "author": "unlyEd",
+  "license": "MIT",
+  "devDependencies": {
+    "aws-sdk": "2.363.0",
+    "babel-core": "6.26.3",
+    "babel-loader": "7.1.5",
+    "babel-preset-env": "1.7.0",
+    "serverless": "1.33.2",
+    "serverless-offline": "3.31.3",
+    "serverless-webpack": "5.2.0",
+    "webpack": "4.26.1",
+    "webpack-node-externals": "1.7.2"
+  },
+  "dependencies": {
+    "@unly/serverless-plugin-dynamodb-backups": "1.0.0",
+    "lodash.filter": "4.5.1",
+    "moment": "2.22.1"
+  }
+}

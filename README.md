@@ -1,96 +1,81 @@
-# Serverless plugin db backups
+# Serverless plugin db backups _(for the Serverless Framework on AWS)_
 
-## About
+## Introduction
 
-This serverless plugin simplifies backup creation automation, for all the resources created in
-serverless.yml with the popular [Serverless Framework](https://serverless.com) and AWS Lambda.
+> If you want to automate your DynamoDB database backups, then this plugin may be what you need.
 
-Currently we support **Node.js 6.10**, **Node.js 8.10**.
+As we build various services on AWS using the serverless design, we need reusable backups services, both scalable and easy to implement.
+We therefore created this plugin, to make sure that each project can create its own DynamoDB automated backup solution.
 
-## Why :grey_question:
+This is a plugin which simplifies **DynamoDB backups** creation automation for all the resources created in
+`serverless.yml` when using the [Serverless Framework](https://serverless.com) and AWS Cloud provider.
 
 
-As we build various services on aws in :zap: serverless mode, we need reusable backup service, scalable and easy to implement.
-For that we created this plugin, to make sure that each project can create its own dynamodb automatic backup solution.
+We officially support **Node.js 6.10** and **Node.js 8.10**.
 
-## Installation
-
-* Install the plugin
-  ```bash
-  yarn add https://bitbucket.org/studylink_team/serverless-plugin-db-backups.git -D
-  ```
+We officially support Serverless Framework `>=1.12.0`.
 
 ## Benefits
 
-* Automated Backups on your resources (serverless.yml)
+* Automated Backups on your configured resources (`serverless.yml`)
 * Easy configuration
-* Report Error on slack channel (see configuration)
-* Delete old Backups (see configuration)
+* Report Error on slack channel _(see configuration)_
+* Delete old Backups automatically (retention) _(see configuration)_
 
+## Installation
+
+Install the plugin
+
+NPM:
+```bash
+npm install @unly/serverless-plugin-dynamodb-backups
+```
+
+YARN:
+```bash
+yarn add @unly/serverless-plugin-dynamodb-backups
+```
 
 ## Usage
-This plugin allows configuration of the library through the `serverless.yml`
 
-> Step 1: Load the Plugin (this plugin must be the first)
+### Step 1: Load the Plugin
 
-The plugin determines your environment during deployment and adds all
-environment variables to your Lambda function. All you need to
-do is to load the plugin:
+The plugin determines your environment during deployment and adds all environment variables to your Lambda function. 
+All you need to do is to load the plugin:
 
 ```yaml
 plugins:
-  - serverless-plugin-db-backups
+  - '@unly/serverless-plugin-dynamodb-backups'
 ```
 
-> Step 2: declare handler:
+### Step 2: declare handler:
 
 Create a file:
 
 ```javascript
-import dynamodbAutoBackups from 'serverless-plugin-db-backups';
+import dynamodbAutoBackups from 'serverless-plugin-db-backups/lib';
 
 export const handler = dynamodbAutoBackups;
 ```
 
-> Step 3: Custom config `serverless.yml`
+### Step 3: Custom config `serverless.yml`
 
 Set the `dynamodbAutoBackups` configuration option as follows:
 
 ```yaml
 custom:
   dynamodbAutoBackups:
-    backupRate: 'your_schedule'
+    backupRate: rate(5 minutes) # XXX see backupRate configuration
     source: path/to/your_handler_file
 ```
 
-> Step 4: iamRoleStatements `serverless.yml`
-
-```yaml
-provider:
-    iamRoleStatements:
-    - Effect: "Allow"
-      Action:
-      - dynamodb:ListTables
-      - dynamodb:ListBackups
-      - dynamodb:DeleteBackup
-        Resource: "*"
-    - Effect: "Allow"
-      Action:
-      - dynamodb:CreateBackup
-      Resource:
-        Fn::Join:
-        - ":"
-        - - "arn:aws:dynamodb"
-          - Ref: 'AWS::Region'
-          - Ref: 'AWS::AccountId'
-          - "table/*"
-```
-
-### Configuration `serverless.yml`:
+### Configuration in `serverless.yml`:
 * `source`
   > **required** - path to your handler function.
 * `backupRate`
   > **required** - The schedule on which you want to backup your table. You can use either `rate` syntax (`rate(1 hour)`) or `cron` syntax (`cron(0 12 * * ? *)`). See [here](https://serverless.com/framework/docs/providers/aws/events/schedule/) for more details on configuration.
+* `name`
+  > **optional** - automatically set, but you could provide your own name for this lambda.
 * `slackWebhook`
   > **optional** - An HTTPS endpoint for an [incoming webhook](https://api.slack.com/incoming-webhooks) to Slack. If provided, it will error messages to a Slack channel when it runs.
 * `backupRemovalEnabled`
@@ -104,3 +89,37 @@ provider:
    * `USER` - On-demand backup created by you.
    * `SYSTEM` - On-demand backup automatically created by DynamoDB.
    * `ALL` - All types of on-demand backups (USER and SYSTEM).
+
+
+### Example Configuration:
+
+We want to create some backups every 40 minutes, delete all backups longer than 15 days, be warned if backups are not created.
+
+```yaml
+custom:
+  dynamodbAutoBackups:
+    backupRate: rate(40 minutes)
+    source: path/to/your_handler_file
+    slackWebhook: https://xxxxxxxxxxxxx
+    backupRemovalEnabled: true     # Enable backupRetentionDays
+    backupRetentionDays: 15     # if backupRemovalEnabled is not provided, then backupRetentionDays is not used
+```
+
+We want to create some backups every friday at 2:00 am, delete all backups create by USER longer than 3 days, be warned if backups are not created.
+```yaml
+custom:
+  dynamodbAutoBackups:
+    backupRate: cron(0 2 ? * FRI *) # every friday at 2:00 am
+    source: path/to/your_handler_file
+    slackWebhook: https://xxxxxxxxxxxxx
+    backupRemovalEnabled: true     # Enable backupRetentionDays
+    backupRetentionDays: 3     # if backupRemovalEnabled is not provide, then backupRetentionDays is not used
+    backupType: USER  # delete all backups created by an user, not system backups
+```
+
+### Example
+
+To test this plugin, you can clone this repository.
+Go to examples / serverless-example, and follow the README.
+
+enjoy :)
