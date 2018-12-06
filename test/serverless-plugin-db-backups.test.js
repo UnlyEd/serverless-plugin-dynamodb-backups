@@ -9,7 +9,7 @@ describe('@unly/serverless-plugin-dynamodb-backups init', () => {
 
   let slsPlugin;
 
-  test('check if the plugin is already validate', () => {
+  test('check if the plugin is already validated', () => {
     slsPlugin = new DynamodbBackups(serverless('classic'));
     slsPlugin.validate();
     expect(slsPlugin.validated).toEqual(true);
