@@ -13,6 +13,8 @@ This is a plugin which simplifies **DynamoDB backups** creation automation for a
 
 We officially support **Node.js 6.10** and **Node.js 8.10**.
 
+We officially support Serverless Framework `>=1.12.0`.
+
 ## Benefits
 
 * Automated Backups on your configured resources (`serverless.yml`)
