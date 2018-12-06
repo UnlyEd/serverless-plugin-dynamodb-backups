@@ -9,7 +9,7 @@
     "logs:listBackups": "sls logs -f listBackups -t",
     "logs:backups": "sls logs -f serverless-plugin-db-backups -t"
   },
-  "author": "unly",
+  "author": "unlyEd",
   "license": "MIT",
   "devDependencies": {
     "aws-sdk": "2.363.0",

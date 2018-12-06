@@ -26,7 +26,7 @@
     "test": "jest --watch",
     "coverage": "jest --coverage"
   },
-  "author": "unly",
+  "author": "unlyEd",
   "license": "MIT",
   "dependencies": {
     "axios": "0.18.0",
