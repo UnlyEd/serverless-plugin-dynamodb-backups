@@ -7,7 +7,6 @@
       </value>
     </option>
     <option name="RIGHT_MARGIN" value="160" />
-    <option name="HTML_DO_NOT_INDENT_CHILDREN_OF" value="thead,tbody,tfoot" />
     <option name="FORMATTER_TAGS_ENABLED" value="true" />
     <HTMLCodeStyleSettings>
       <option name="HTML_ATTRIBUTE_WRAP" value="4" />
