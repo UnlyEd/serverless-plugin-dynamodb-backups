@@ -120,4 +120,8 @@ custom:
 To test this plugin, you can clone this repository.
 Go to `examples/serverless-example`, and follow the README.
 
+---
 
+# Known issues
+
+- Cannot use a variable as `name` attribute

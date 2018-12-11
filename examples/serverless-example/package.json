@@ -6,8 +6,7 @@
   "scripts": {
     "start": "sls offline start",
     "deploy": "sls deploy",
-    "logs:listBackups": "sls logs -f listBackups -t",
-    "logs:backups": "sls logs -f serverless-plugin-db-backups -t"
+    "logs:listBackups": "sls logs -f listBackups -t"
   },
   "author": "unlyEd",
   "license": "MIT",
