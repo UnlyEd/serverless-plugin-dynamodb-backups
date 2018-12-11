@@ -33,6 +33,18 @@ const scenarios = {
     }
     ,
   },
+  disabled: {
+    dynamodbAutoBackups: {
+      backupRate: 'rate(5 minutes)',
+      source:
+        'src/backups.handler',
+      backupRemovalEnabled:
+        true,
+      backupRetentionDays:
+        15,
+      active: false,
+    },
+  },
 };
 
 const serverless = (scenarioName) => {

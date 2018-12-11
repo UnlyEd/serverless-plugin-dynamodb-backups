@@ -82,6 +82,12 @@ class DynamodbAutoBackup {
     if (has(this.custom, 'dynamodbAutoBackups') && isPlainObject(this.custom.dynamodbAutoBackups)) {
       assign(this.dynamodbAutoBackups, this.custom.dynamodbAutoBackups);
     }
+
+    if (!has(this.dynamodbAutoBackups, 'active')) {
+      set(this.dynamodbAutoBackups, 'active', true);
+    }
+
+    console.log(chalk.yellow.bold(`@unly/serverless-plugin-dynamodb-backups is`), this.dynamodbAutoBackups.active ? 'enabled' : 'disabled');
   }
 
   validate() {
@@ -163,6 +169,9 @@ class DynamodbAutoBackup {
   }
 
   generateBackupFunction() {
+    if (!this.dynamodbAutoBackups.active) {
+      return BbPromise.resolve();
+    }
     const dynamodbAutoBackups = clone(this.functionBackup);
     dynamodbAutoBackups.events = uniqWith(this.functionBackup.events, isEqual);
 
@@ -183,6 +192,9 @@ class DynamodbAutoBackup {
   }
 
   manageIamRole() {
+    if (!this.dynamodbAutoBackups.active) {
+      return BbPromise.resolve();
+    }
     if (this.serverless.service.provider.iamRoleStatements) {
       iamRoleStatements.map((role) => this.serverless.service.provider.iamRoleStatements.push(role));
     } else {
