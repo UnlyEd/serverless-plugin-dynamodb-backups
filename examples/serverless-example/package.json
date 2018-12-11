@@ -6,8 +6,8 @@
   "scripts": {
     "start": "sls offline start",
     "deploy": "sls deploy",
-    "logs:listBackups": "sls logs -f listBackups -t",
-    "logs:backups": "sls logs -f serverless-plugin-db-backups -t"
+    "invoke:listBackups": "sls invoke -f listBackups -l",
+    "logs:backups": "sls logs -f example-dynamodbAutoBackups -t"
   },
   "author": "unlyEd",
   "license": "MIT",

@@ -1,25 +1,18 @@
-# serverless-plugin-example
+# serverless-plugin-dynamodb-backups-serverless-example
 
 ## AWS Credentials with serverless
 
-see https://serverless.com/framework/docs/providers/aws/guide/credentials/
+If you already have a proper Serverless environment configured, then you can skip this.
+
+See https://serverless.com/framework/docs/providers/aws/guide/credentials/
 
 ## Usage
 
-Setup:
+1. Clone this repository
+1. `yarn install`
+1. Update the `serverless.yml` and look out for `TODO`, that's where you're likely to have things to change to match your serverless configuration
+1. `yarn run deploy`
+1. `yarn run logs:backups` will display the logs when a backup is made
+1. `yarn run invoke:listBackups` will display the list of backups that have been made
 
-> configure your credentials (with a profile or not), add config to serverless.yml
-
-Deploy:
-
-```
-yarn run deploy
-```
-
-Test:
-
-After deploy, this example provide one endpoint `/listBackups` for list all Book Table backups.
-Just wait 1 minute, check this endpoint.
-
-
-> You could also see logs on your terminal: `yarn run logs:backups` and wait 1 minute to see logs :)
+> Don't forget to `sls remove` your stack once you've done playing with it, or it's gonna make backups indefinitely!
