@@ -85,7 +85,7 @@ custom:
 * `backupType` (default ALL)  **type** String
   > **optional** - The backups from the table specified by BackupType are listed.
 * `active` (default true)  **type** Boolean
-  > **optional** - sometimes you want to disabled backups on an specific environment
+  > **optional** - sometimes you want to disabled this plugin on an specific environment
 
    Where backupType can be:
    * `USER` - On-demand backup created by you.
@@ -122,6 +122,6 @@ custom:
 ### Example
 
 To test this plugin, you can clone this repository.
-Go to examples / serverless-example, and follow the README.
+Go to examples/serverless-example, and follow the README.
 
 enjoy :)
