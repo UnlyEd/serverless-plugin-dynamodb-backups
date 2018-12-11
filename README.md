@@ -43,9 +43,12 @@ yarn add @unly/serverless-plugin-dynamodb-backups
 The plugin determines your environment during deployment and adds all environment variables to your Lambda function. 
 All you need to do is to load the plugin:
 
+> Must be declared before webpack, because at the moment it is this plugin that provides the path to the function
+
 ```yaml
 plugins:
   - '@unly/serverless-plugin-dynamodb-backups'
+  - serverless-webpack
 ```
 
 ### Step 2: declare handler:
