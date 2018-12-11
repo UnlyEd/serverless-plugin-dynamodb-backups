@@ -1,61 +1,58 @@
 # For full config options, check the docs:
 #    docs.serverless.com
 
-service: serverless-db-examples
+service: serverless-plugin-dynamodb-backups-serverless-example
 
 frameworkVersion: "=1.33.2"
 
 plugins:
-- '@unly/serverless-plugin-dynamodb-backups'
-- serverless-webpack
-- serverless-offline
+  - '@unly/serverless-plugin-dynamodb-backups' # Must be first, even before "serverless-webpack", see https://github.com/UnlyEd/serverless-plugin-dynamodb-backups
+  - serverless-webpack # Must be second, see https://github.com/99xt/serverless-dynamodb-local#using-with-serverless-offline-and-serverless-webpack-plugin
+  - serverless-offline # See https://github.com/dherault/serverless-offline
 
 custom:
   dynamodbAutoBackups: # @unly/serverless-plugin-dynamodb-backups configuration (see README for more)
-    backupRate: rate(1 minute)
+    backupRate: rate(1 minute) # Set to 1mn in the example to see the result quickly
     source: src/backups.handler
-    name: serverless-plugin-db-backups
+    name: ${self:service}-dynamodbAutoBackups # Using the service name as a base name may be a good practice
     backupRemovalEnabled: true
-    backupRetentionDays: 1
+    backupRetentionDays: 1 # Created backups will be removed the next day
   serverless-offline:
     port: 3000
   webpack:
     webpackConfig: ./webpack.config.js
     includeModules: true
-    # If you use Yarn instead of NPM in your environment, comment the following line.
     packager: yarn
 
 provider:
   name: aws
   runtime: nodejs8.10
-  stage: development
-  region: eu-west-1
-  profile: sandbox # TODO You need to either remove this or use your profile
+  stage: development # TODO You may want to change this
+  region: eu-west-1 # TODO You may want to change this
+  profile: sandbox # TODO You need to either remove this or use your own profile
   environment:
-    TABLE_NAME: Book
+    TABLE_NAME: Book # We specify the table name so we can check its backups list using the dedicated endpoint /listBackups
 
 functions:
-  listBackups:
+  listBackups: # Endpoint example to see the list of all backups that have been made
     handler: src/listBackups.handler
     events:
       - http:
           method: GET
           path: /listBackups
 
-# Create dynamodb table on aws for test
 resources:
   Resources:
-    BookTable:
+    BookTable: # Create dynamodb table on aws for testing
       Type: AWS::DynamoDB::Table # see https://docs.aws.amazon.com/fr_fr/AWSCloudFormation/latest/UserGuide/aws-resource-dynamodb-table.html
       Properties:
         TableName: Book
         AttributeDefinitions:
-        - AttributeName: id
-          AttributeType: S
+          - AttributeName: id
+            AttributeType: S
         KeySchema:
-        - AttributeName: id
-          KeyType: HASH
+          - AttributeName: id
+            KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
-
