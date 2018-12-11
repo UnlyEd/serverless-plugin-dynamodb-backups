@@ -84,10 +84,10 @@ class DynamodbAutoBackup {
     }
 
     if (!has(this.dynamodbAutoBackups, 'active')) {
-      set(this.dynamodbAutoBackups.active, 'active', true);
+      set(this.dynamodbAutoBackups, 'active', true);
     }
 
-    console.log(chalk.yellow.bold(`@unly/serverless-plugin-dynamodb-backups: is enabled ${!!this.dynamodbAutoBackups.active}`));
+    console.log(chalk.yellow.bold(`@unly/serverless-plugin-dynamodb-backups is`), this.dynamodbAutoBackups.active ? 'enabled' : 'disabled');
   }
 
   validate() {

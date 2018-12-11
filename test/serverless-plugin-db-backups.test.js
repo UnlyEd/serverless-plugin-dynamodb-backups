@@ -16,6 +16,7 @@ describe('@unly/serverless-plugin-dynamodb-backups init', () => {
     expect(slsPlugin.dynamodbAutoBackups).toEqual({
       backupRate: 'rate(5 minutes)',
       source: 'src/backups.handler',
+      active: true,
     });
   });
 
@@ -100,5 +101,57 @@ describe('@unly/serverless-plugin-dynamodb-backups init', () => {
     await afterPackageInit();
 
     expect(slsPlugin.serverless.service.provider.iamRoleStatements.length).toEqual(3);
+  });
+
+  test('if iamRoleStatements in serverles should merge it', async () => {
+    slsPlugin = new DynamodbBackups(serverless('all'));
+    slsPlugin.serverless.service.provider.iamRoleStatements = [
+      {
+        Effect: 'Allow',
+        Action:
+          [
+            'dynamodb:ListTables',
+            'dynamodb:ListBackups',
+            'dynamodb:DeleteBackup',
+          ],
+        Resource: '*',
+      },
+    ];
+
+    const beforePackageInit = slsPlugin.hooks['before:package:initialize'];
+    const afterPackageInit = slsPlugin.hooks['after:package:initialize'];
+
+    expect(slsPlugin.validated).toBeFalsy();
+
+    await beforePackageInit();
+
+    expect(global.console.log).toHaveBeenCalled();
+
+    expect(slsPlugin.validated).toEqual(true);
+    expect(slsPlugin.functionBackup).toHaveProperty('name');
+    expect(slsPlugin.functionBackup).toHaveProperty('events');
+    expect(slsPlugin.functionBackup).toHaveProperty('handler');
+    expect(slsPlugin.functionBackup).toHaveProperty('environment');
+
+    await afterPackageInit();
+
+    expect(slsPlugin.serverless.service.provider.iamRoleStatements.length).toEqual(3);
+  });
+
+  test('should disabled plugin and not provide function dynamodbAutoBackups', async () => {
+    slsPlugin = new DynamodbBackups(serverless('disabled'));
+
+    const beforePackageInit = slsPlugin.hooks['before:package:initialize'];
+    const afterPackageInit = slsPlugin.hooks['after:package:initialize'];
+
+    expect(slsPlugin.validated).toBeFalsy();
+
+    await beforePackageInit();
+
+    expect(slsPlugin.validated).toEqual(true);
+
+    await afterPackageInit();
+
+    expect(slsPlugin.serverless.service.functions.dynamodbAutoBackups).toBeUndefined();
   });
 });
