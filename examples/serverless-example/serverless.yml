@@ -1,7 +1,7 @@
 # For full config options, check the docs:
 #    docs.serverless.com
 
-service: serverless-plugin-dynamodb-backups-serverless-example
+service: example-dynamodbAutoBackups
 
 frameworkVersion: "=1.33.2"
 
@@ -14,7 +14,7 @@ custom:
   dynamodbAutoBackups: # @unly/serverless-plugin-dynamodb-backups configuration (see README for more)
     backupRate: rate(1 minute) # Set to 1mn in the example to see the result quickly
     source: src/backups.handler
-    name: ${self:service}-dynamodbAutoBackups # Using the service name as a base name may be a good practice
+    name: example-dynamodbAutoBackups # Using the service name as a base name may be a good practice (but it doesn't work at the time, due to a bug on our side)
     backupRemovalEnabled: true
     backupRetentionDays: 1 # Created backups will be removed the next day
   serverless-offline:
