@@ -109,7 +109,7 @@ class DynamodbAutoBackup {
       );
     }
 
-    if (!has(this.dynamodbAutoBackups, 'slackWebhook')) {
+    if (!has(this.dynamodbAutoBackups, 'slackWebhook') && this.dynamodbAutoBackups.active) {
       console.log(chalk.yellow.bold('@unly/serverless-plugin-dynamodb-backups: -----------------------------------------------------------'));
       console.log('         Warning: slackWebhook is not provide, you will not be notified of errors !');
       console.log();
@@ -199,6 +199,9 @@ class DynamodbAutoBackup {
   }
 
   instrumentFunctions() {
+    if (!this.dynamodbAutoBackups.active) {
+      return BbPromise.resolve();
+    }
     const allFunctions = this.serverless.service.getAllFunctionsNames();
 
     console.log(chalk.yellow.bold('@unly/serverless-plugin-dynamodb-backups: -----------------------------------------------------------'));
