@@ -124,6 +124,3 @@ Go to `examples/serverless-example`, and follow the README.
 
 ---
 
-# Known issues
-
-- Cannot use a variable as `name` attribute
