@@ -14,9 +14,10 @@ custom:
   dynamodbAutoBackups: # @unly/serverless-plugin-dynamodb-backups configuration (see README for more)
     backupRate: rate(1 minute) # Set to 1mn in the example to see the result quickly
     source: src/backups.handler
-    name: example-dynamodbAutoBackups # Using the service name as a base name may be a good practice (but it doesn't work at the time, due to a bug on our side)
+    name: ${self:custom.name} # Using the service name as a base name may be a good practice (but it doesn't work at the time, due to a bug on our side)
     backupRemovalEnabled: true
     backupRetentionDays: 1 # Created backups will be removed the next day
+  name: example-dynamodbAutoBackups
   serverless-offline:
     port: 3000
   webpack:
