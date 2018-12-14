@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/UnlyEd/serverless-plugin-dynamodb-backups.svg?branch=master)](https://travis-ci.com/UnlyEd/serverless-plugin-dynamodb-backups)
+
 # Serverless plugin DynamoDB backups
 
 ## Introduction
