@@ -73,38 +73,28 @@ class DynamodbAutoBackup {
         .then(this.instrumentFunctions)
         .then(this.manageIamRole),
     };
-
-    this.configPlugin();
   }
 
   configPlugin() {
+    if (this.ready) {
+      return BbPromise.resolve();
+    }
+
     this.dynamodbAutoBackups = {};
+
     if (has(this.custom, 'dynamodbAutoBackups') && isPlainObject(this.custom.dynamodbAutoBackups)) {
       assign(this.dynamodbAutoBackups, this.custom.dynamodbAutoBackups);
     }
 
+    // Set configuration
+    // Validate dynamodbAutoBackups options
     if (!has(this.dynamodbAutoBackups, 'active')) {
       set(this.dynamodbAutoBackups, 'active', true);
     }
 
-    console.log(chalk.yellow.bold(`@unly/serverless-plugin-dynamodb-backups is`), this.dynamodbAutoBackups.active ? 'enabled' : 'disabled');
-  }
+    console.log(chalk.yellow.bold('@unly/serverless-plugin-dynamodb-backups is'), this.dynamodbAutoBackups.active ? 'enabled' : 'disabled');
+    console.log();
 
-  validate() {
-    if (this.validated) {
-      // Already running
-      return BbPromise.resolve();
-    }
-
-    // Check required serverless version
-    if (SemVer.gt('1.12.0', this.serverless.getVersion())) {
-      return BbPromise.reject(new this.serverless.classes.Error('Serverless version must be >= 1.12.0'));
-    }
-
-    // Set configuration // Set default option values
-    this.validated = true;
-
-    // Validate dynamodbAutoBackups options
     if (!this.dynamodbAutoBackups.source) {
       return BbPromise.reject(new this.serverless.classes.Error('dynamodbAutoBackups source must be set !'));
     }
@@ -132,10 +122,31 @@ class DynamodbAutoBackup {
       environment: {},
     };
 
+    this.ready = true;
+
     return BbPromise.resolve();
   }
 
+  validate() {
+    if (this.validated && this.ready) {
+      // Already setup and running
+      return BbPromise.resolve();
+    }
+
+    // Check required serverless version
+    if (SemVer.gt('1.12.0', this.serverless.getVersion())) {
+      return BbPromise.reject(new this.serverless.classes.Error('Serverless version must be >= 1.12.0'));
+    }
+
+    this.validated = true;
+
+    return this.configPlugin();
+  }
+
   constructFunctionObject() {
+    if (!this.dynamodbAutoBackups.active) {
+      return BbPromise.resolve();
+    }
     const events = [];
 
     if (isString(this.dynamodbAutoBackups.backupRate)) {
@@ -151,6 +162,9 @@ class DynamodbAutoBackup {
   }
 
   populateEnv() {
+    if (!this.dynamodbAutoBackups.active) {
+      return BbPromise.resolve();
+    }
     // Environment variables have to be a string in order to be processed properly
     if (has(this.dynamodbAutoBackups, 'backupRemovalEnabled') && has(this.dynamodbAutoBackups, 'backupRetentionDays')) {
       set(this.functionBackup, 'environment.BACKUP_REMOVAL_ENABLED', String(this.dynamodbAutoBackups.backupRemovalEnabled));
