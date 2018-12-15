@@ -1,4 +1,6 @@
-[![Build Status](https://travis-ci.com/UnlyEd/serverless-plugin-dynamodb-backups.svg?branch=master)](https://travis-ci.com/UnlyEd/serverless-plugin-dynamodb-backups)
+[![Build Status](https://travis-ci.com/UnlyEd/serverless-plugin-dynamodb-backups.svg?branch=master)](https://travis-ci.com/UnlyEd/serverless-plugin-dynamodb-backups) 
+[![Maintainability](https://api.codeclimate.com/v1/badges/980404446e29f74f95fd/maintainability)](https://codeclimate.com/github/UnlyEd/serverless-plugin-dynamodb-backups/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/980404446e29f74f95fd/test_coverage)](https://codeclimate.com/github/UnlyEd/serverless-plugin-dynamodb-backups/test_coverage)
 
 # Serverless plugin DynamoDB backups
 
@@ -124,6 +126,3 @@ Go to `examples/serverless-example`, and follow the README.
 
 ---
 
-# Known issues
-
-- Cannot use a variable as `name` attribute

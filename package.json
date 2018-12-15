@@ -1,6 +1,6 @@
 {
   "name": "@unly/serverless-plugin-dynamodb-backups",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Serverless plugin - Automatically creates DynamoDB backups",
   "main": "serverless-plugin-db-backups.js",
   "repository": "https://github.com/UnlyEd/serverless-plugin-db-backups.git",
@@ -24,7 +24,8 @@
     "lint": "eslint . --cache --fix",
     "test:once": "jest",
     "test": "jest --watch",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "release:latest": "npm publish --tag latest --access=public"
   },
   "author": "unlyEd",
   "license": "MIT",
@@ -49,7 +50,7 @@
     "babel-cli": "6.26.0",
     "babel-core": "6.26.3",
     "babel-preset-env": "1.7.0",
-    "eslint": "5.9.0",
+    "eslint": "4.19.1",
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-plugin-import": "2.14",
     "jest": "23.6.0",
