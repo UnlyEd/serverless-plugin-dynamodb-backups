@@ -25,6 +25,7 @@
     "test:once": "jest",
     "test": "jest --watch",
     "coverage": "jest --coverage",
+    "release:alpha": "npm publish --tag alpha --access=public",
     "release:latest": "npm publish --tag latest --access=public"
   },
   "author": "unlyEd",
