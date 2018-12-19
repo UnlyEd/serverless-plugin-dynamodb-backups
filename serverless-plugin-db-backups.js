@@ -12,6 +12,15 @@ const BbPromise = require('bluebird');
 const SemVer = require('semver');
 const chalk = require('chalk');
 
+const hooks = [
+  'after:package:initialize',
+  'before:deploy:deploy',
+  'before:invoke:local:invoke',
+  'before:offline:start:init',
+  'before:remove:remove',
+  'before:logs:logs',
+];
+
 // iamRole Helpers
 const iamRoleStatements = require('./helpers/iamRole');
 
@@ -21,80 +30,32 @@ const iamRoleStatements = require('./helpers/iamRole');
 class DynamodbAutoBackup {
   constructor(serverless) {
     this.serverless = serverless;
+
     this.custom = this.serverless.service.custom;
-
-    this.hooks = {
-      'before:package:initialize': () => BbPromise.bind(this)
-        .then(this.validate),
-
-      'after:package:initialize': () => BbPromise.bind(this)
-        .then(this.validate)
-        .then(this.constructFunctionObject)
-        .then(this.populateEnv)
-        .then(this.generateBackupFunction)
-        .then(this.manageIamRole),
-
-      'before:deploy:deploy': () => BbPromise.bind(this)
-        .then(this.validate)
-        .then(this.constructFunctionObject)
-        .then(this.populateEnv)
-        .then(this.generateBackupFunction)
-        .then(this.instrumentFunctions)
-        .then(this.manageIamRole),
-
-      'before:invoke:local:invoke': () => BbPromise.bind(this)
-        .then(this.validate)
-        .then(this.constructFunctionObject)
-        .then(this.populateEnv)
-        .then(this.generateBackupFunction)
-        .then(this.manageIamRole),
-
-      'before:offline:start:init': () => BbPromise.bind(this)
-        .then(this.validate)
-        .then(this.constructFunctionObject)
-        .then(this.populateEnv)
-        .then(this.generateBackupFunction)
-        .then(this.instrumentFunctions)
-        .then(this.manageIamRole),
-
-      'before:remove:remove': () => BbPromise.bind(this)
-        .then(this.validate)
-        .then(this.constructFunctionObject)
-        .then(this.populateEnv)
-        .then(this.generateBackupFunction)
-        .then(this.instrumentFunctions)
-        .then(this.manageIamRole),
-
-      'before:logs:logs': () => BbPromise.bind(this)
-        .then(this.validate)
-        .then(this.constructFunctionObject)
-        .then(this.populateEnv)
-        .then(this.generateBackupFunction)
-        .then(this.instrumentFunctions)
-        .then(this.manageIamRole),
-    };
-  }
-
-  configPlugin() {
-    if (this.ready) {
-      return BbPromise.resolve();
-    }
 
     this.dynamodbAutoBackups = {};
 
-    if (has(this.custom, 'dynamodbAutoBackups') && isPlainObject(this.custom.dynamodbAutoBackups)) {
-      assign(this.dynamodbAutoBackups, this.custom.dynamodbAutoBackups);
-    }
+    this.isInstantiate = false;
 
-    // Set configuration
-    // Validate dynamodbAutoBackups options
-    if (!has(this.dynamodbAutoBackups, 'active')) {
-      set(this.dynamodbAutoBackups, 'active', true);
-    }
+    this.chainPromises = () => BbPromise.bind(this)
+      .then(this.validate)
+      .then(this.checkConfigPlugin)
+      .then(this.constructFunctionObject)
+      .then(this.populateEnv)
+      .then(this.generateBackupFunction)
+      .then(this.manageIamRole);
 
-    console.log(chalk.yellow.bold('@unly/serverless-plugin-dynamodb-backups is'), this.dynamodbAutoBackups.active ? 'enabled' : 'disabled');
-    console.log();
+    this.hooks = hooks.reduce((initialValue, hook) => {
+      initialValue[hook] = () => this.init();
+      return initialValue;
+    }, {});
+  }
 
+  /**
+   * Validate dynamodbAutoBackups options
+   * @returns {Promise.resolve}
+   */
+  checkConfigPlugin() {
     if (!this.dynamodbAutoBackups.source) {
       return BbPromise.reject(new this.serverless.classes.Error('dynamodbAutoBackups source must be set !'));
     }
@@ -110,8 +71,8 @@ class DynamodbAutoBackup {
     }
 
     if (!has(this.dynamodbAutoBackups, 'slackWebhook') && this.dynamodbAutoBackups.active) {
-      console.log(chalk.yellow.bold('@unly/serverless-plugin-dynamodb-backups: -----------------------------------------------------------'));
-      console.log('         Warning: slackWebhook is not provide, you will not be notified of errors !');
+      DynamodbAutoBackup.consoleLog('@unly/serverless-plugin-dynamodb-backups: -----------------------------------------------------------');
+      DynamodbAutoBackup.consoleLog('         Warning: slackWebhook is not provide, you will not be notified of errors !');
       console.log();
     }
 
@@ -122,31 +83,28 @@ class DynamodbAutoBackup {
       environment: {},
     };
 
-    this.ready = true;
-
     return BbPromise.resolve();
   }
 
+  /**
+   *
+   * check the compatibility of serverless version
+   * @returns {Promise.resolve}
+   */
   validate() {
-    if (this.validated && this.ready) {
-      // Already setup and running
-      return BbPromise.resolve();
-    }
-
     // Check required serverless version
     if (SemVer.gt('1.12.0', this.serverless.getVersion())) {
       return BbPromise.reject(new this.serverless.classes.Error('Serverless version must be >= 1.12.0'));
     }
 
-    this.validated = true;
-
-    return this.configPlugin();
+    return BbPromise.resolve();
   }
 
-  constructFunctionObject() {
-    if (!this.dynamodbAutoBackups.active) {
-      return BbPromise.resolve();
-    }
+  /**
+   * add the schedule event
+   * @returns {Promise.resolve}
+   */
+  setCronEvent() {
     const events = [];
 
     if (isString(this.dynamodbAutoBackups.backupRate)) {
@@ -156,15 +114,17 @@ class DynamodbAutoBackup {
       events.push(cron);
     }
 
+    console.log(this.functionBackup);
     this.functionBackup.events = events;
 
     return BbPromise.resolve();
   }
 
+  /**
+   * Check config for variables and set them to dynamodbBackup function
+   * @returns {Promise.resolve}
+   */
   populateEnv() {
-    if (!this.dynamodbAutoBackups.active) {
-      return BbPromise.resolve();
-    }
     // Environment variables have to be a string in order to be processed properly
     if (has(this.dynamodbAutoBackups, 'backupRemovalEnabled') && has(this.dynamodbAutoBackups, 'backupRetentionDays')) {
       set(this.functionBackup, 'environment.BACKUP_REMOVAL_ENABLED', String(this.dynamodbAutoBackups.backupRemovalEnabled));
@@ -182,10 +142,11 @@ class DynamodbAutoBackup {
     return BbPromise.resolve();
   }
 
+  /**
+   * Assign dynamodbBackup function to serverless service
+   * @returns {Promise.resolve}
+   */
   generateBackupFunction() {
-    if (!this.dynamodbAutoBackups.active) {
-      return BbPromise.resolve();
-    }
     const dynamodbAutoBackups = clone(this.functionBackup);
     dynamodbAutoBackups.events = uniqWith(this.functionBackup.events, isEqual);
 
@@ -193,35 +154,80 @@ class DynamodbAutoBackup {
       assign(this.serverless.service.functions, { [this.dynamodbAutoBackups.name || 'dynamodbAutoBackups']: dynamodbAutoBackups });
     }
 
-    console.log(chalk.yellow.bold('@unly/serverless-plugin-dynamodb-backups:'), ` ${this.functionBackup.name} was created`);
+    DynamodbAutoBackup.consoleLog('@unly/serverless-plugin-dynamodb-backups: -----------------------------------------------------------');
+    DynamodbAutoBackup.consoleLog(`     function:        ${this.functionBackup.name}`);
     console.log();
     return BbPromise.resolve();
   }
 
-  instrumentFunctions() {
-    if (!this.dynamodbAutoBackups.active) {
-      return BbPromise.resolve();
-    }
-    const allFunctions = this.serverless.service.getAllFunctionsNames();
-
-    console.log(chalk.yellow.bold('@unly/serverless-plugin-dynamodb-backups: -----------------------------------------------------------'));
-    return BbPromise.map(allFunctions, (functionName) => DynamodbAutoBackup.consoleLog(functionName));
-  }
-
+  /**
+   * Provide iam access
+   * @returns {Promise.resolve}
+   */
   manageIamRole() {
-    if (!this.dynamodbAutoBackups.active) {
-      return BbPromise.resolve();
-    }
     if (this.serverless.service.provider.iamRoleStatements) {
       iamRoleStatements.map((role) => this.serverless.service.provider.iamRoleStatements.push(role));
     } else {
       this.serverless.service.provider.iamRoleStatements = iamRoleStatements;
     }
+    this.isInstantiate = true;
     return BbPromise.resolve();
   }
 
-  static consoleLog(functionName) {
-    console.log(chalk.yellow(`     function:        ${functionName}`));
+  /**
+   * check if an instance of the class is already running
+   * @returns {function}
+   */
+  isAlreadyInInstance() {
+    if (this.isInstantiate) {
+      return BbPromise.resolve();
+    }
+    return this.isActivated(this.chainPromises);
+  }
+
+  /**
+   * check if the plugin config is activated
+   * Default to true
+   * @returns {function}
+   */
+  isActivated(cb) {
+    DynamodbAutoBackup.consoleLog(`@unly/serverless-plugin-dynamodb-backups is ${this.dynamodbAutoBackups.active ? 'enabled' : 'disabled'}`);
+    console.log();
+
+    if (!this.dynamodbAutoBackups.active) {
+      return BbPromise.resolve();
+    }
+    return cb();
+  }
+
+  /**
+   * check if dynamodbAutoBackups options is provide
+   * @returns {function}
+   */
+  init() {
+    // if no dynamodbAutoBackups key at custom in serverless.yml or invalid format (throw error)
+    if (!has(this.custom, 'dynamodbAutoBackups') || !isPlainObject(this.custom.dynamodbAutoBackups)) {
+      return BbPromise.reject(
+        new this.serverless.classes.Error('Invalid configuration, see https://www.npmjs.com/package/@unly/serverless-plugin-dynamodb-backups'),
+      );
+    }
+
+    assign(this.dynamodbAutoBackups, this.custom.dynamodbAutoBackups);
+
+    // if dynamodbAutoBackups.active is not provide, default value to true
+    if (!has(this.dynamodbAutoBackups, 'active')) {
+      set(this.dynamodbAutoBackups, 'active', true);
+    }
+
+    return this.isAlreadyInInstance();
+  }
+
+  /**
+   *
+   * @param message
+   */
+  static consoleLog(message) {
+    console.log(chalk.yellow.bold(message));
   }
 }
 
