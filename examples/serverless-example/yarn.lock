@@ -149,10 +149,10 @@
     ramda "^0.25.0"
     source-map-support "^0.5.5"
 
-"@unly/serverless-plugin-dynamodb-backups@1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@unly/serverless-plugin-dynamodb-backups/-/serverless-plugin-dynamodb-backups-1.1.1.tgz#96306458ce94057460035dbc957b60b00a0885a0"
-  integrity sha512-/1eYUGST1DGqd092MDxgg7pEGGUpapP1UT4dB6L0IgzY+aoe0a+UNrmKxJZaHhSX8MRtaQ4JUnaV+uP5/68Xng==
+"@unly/serverless-plugin-dynamodb-backups@1.2.0-alpha.1":
+  version "1.2.0-alpha.1"
+  resolved "https://registry.yarnpkg.com/@unly/serverless-plugin-dynamodb-backups/-/serverless-plugin-dynamodb-backups-1.2.0-alpha.1.tgz#be4236007cc4e0cae0a7635375bffc41beafd54d"
+  integrity sha512-203gv1fMD/guz7FQnYARp94hirjZ6KoTSZf67Qx5gqOvUzDNAqgWAzhHTtijtBTpm8ZzywkJd3rvkGKON9o7vw==
   dependencies:
     axios "0.18.0"
     bluebird "3.5.3"
