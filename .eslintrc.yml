@@ -12,6 +12,7 @@ rules:
   no-console: off
   no-unused-vars: off
   import/prefer-default-export: false
+  func-style: ["error", "declaration", { "allowArrowFunctions": true }]
   import/no-extraneous-dependencies: ["error", {"peerDependencies": true}] # XXX https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-extraneous-dependencies.md
 env:
   jest: true
