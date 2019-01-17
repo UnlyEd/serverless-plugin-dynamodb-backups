@@ -18,7 +18,11 @@
   ],
   "jest": {
     "verbose": true,
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "collectCoverage": true,
+    "coverageReporters": [
+      "lcov"
+    ]
   },
   "scripts": {
     "lint": "eslint . --cache --fix",
