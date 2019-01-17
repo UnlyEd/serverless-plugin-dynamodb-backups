@@ -6,8 +6,7 @@ const scenarios = {
       backupRate: 'rate(5 minutes)',
       source:
         'src/backups.handler',
-    }
-    ,
+    },
   },
   empty: {
     dynamodbAutoBackups: {}
