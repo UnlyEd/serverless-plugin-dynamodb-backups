@@ -40,15 +40,11 @@ class DynamodbAutoBackup {
     this.chainPromises = () => BbPromise.bind(this)
       .then(this.validate)
       .then(this.checkConfigPlugin)
-      .then(this.constructFunctionObject)
       .then(this.populateEnv)
       .then(this.generateBackupFunction)
       .then(this.manageIamRole);
 
-    this.hooks = hooks.reduce((initialValue, hook) => {
-      initialValue[hook] = () => this.init();
-      return initialValue;
-    }, {});
+    this.hooks = hooks.reduce((initialValue, hook) => assign(initialValue, { [hook]: () => this.init() }), {});
   }
 
   /**

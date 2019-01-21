@@ -97,3 +97,5 @@ dist
 
 # Optional eslint cache
 .eslintcache
+
+local-settings.js
