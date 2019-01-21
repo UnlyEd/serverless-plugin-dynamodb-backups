@@ -1,6 +1,5 @@
-plugins:
-  eslint:
-    enabled: true
-    channel: "eslint-5"
-    config:
-      config: .eslintrc.yml
+engines:
+  plugins:
+    eslint:
+      enabled: true
+      channel: "eslint-4"
