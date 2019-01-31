@@ -40,6 +40,7 @@ class DynamodbAutoBackup {
     this.chainPromises = () => BbPromise.bind(this)
       .then(this.validate)
       .then(this.checkConfigPlugin)
+      .then(this.setCronEvent)
       .then(this.populateEnv)
       .then(this.generateBackupFunction)
       .then(this.manageIamRole);
@@ -110,7 +111,6 @@ class DynamodbAutoBackup {
       events.push(cron);
     }
 
-    console.log(this.functionBackup);
     this.functionBackup.events = events;
 
     return BbPromise.resolve();
