@@ -12,6 +12,7 @@ const BbPromise = require('bluebird');
 const SemVer = require('semver');
 const chalk = require('chalk');
 
+const ERROR_CONFIG = 'Invalid configuration, see https://www.npmjs.com/package/@unly/serverless-plugin-dynamodb-backups';
 const hooks = [
   'after:package:initialize',
   'before:deploy:deploy',
@@ -62,9 +63,7 @@ class DynamodbAutoBackup {
     }
 
     if (has(this.dynamodbAutoBackups, 'backupRemovalEnabled') && !has(this.dynamodbAutoBackups, 'backupRetentionDays')) {
-      return BbPromise.reject(
-        new this.serverless.classes.Error('if backupRemovalEnabled, backupRetentionDays must be set !'),
-      );
+      return BbPromise.reject(new this.serverless.classes.Error('if backupRemovalEnabled, backupRetentionDays must be set !'));
     }
 
     if (!has(this.dynamodbAutoBackups, 'slackWebhook') && this.dynamodbAutoBackups.active) {
@@ -203,9 +202,7 @@ class DynamodbAutoBackup {
   init() {
     // if no dynamodbAutoBackups key at custom in serverless.yml or invalid format (throw error)
     if (!has(this.custom, 'dynamodbAutoBackups') || !isPlainObject(this.custom.dynamodbAutoBackups)) {
-      return BbPromise.reject(
-        new this.serverless.classes.Error('Invalid configuration, see https://www.npmjs.com/package/@unly/serverless-plugin-dynamodb-backups'),
-      );
+      return BbPromise.reject(new this.serverless.classes.Error(ERROR_CONFIG));
     }
 
     assign(this.dynamodbAutoBackups, this.custom.dynamodbAutoBackups);
