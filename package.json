@@ -24,13 +24,17 @@
       "lcov"
     ]
   },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
   "scripts": {
     "lint": "eslint . --cache --fix",
     "test:once": "jest",
     "test": "jest --watch",
     "coverage": "jest --coverage",
-    "release:alpha": "npm publish --tag alpha --access=public",
-    "release:latest": "npm publish --tag latest --access=public"
+    "release:alpha": "npm publish --tag alpha",
+    "release:latest": "npm publish --tag latest"
   },
   "author": "unlyEd",
   "license": "MIT",
