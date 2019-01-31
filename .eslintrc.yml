@@ -11,8 +11,6 @@ rules:
   strict: off
   no-console: off
   no-unused-vars: off
-  complexity: ["error", { "max": 5 }]
-  max-lines-per-function: ["error", { "max": 25, "skipBlankLines": true }]
   import/prefer-default-export: false
   import/no-extraneous-dependencies: ["error", {"peerDependencies": true}] # XXX https://github.com/benmosher/eslint-plugin-import/blob/master/docs/rules/no-extraneous-dependencies.md
 env:
