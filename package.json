@@ -55,7 +55,7 @@
     "babel-cli": "6.26.0",
     "babel-core": "6.26.3",
     "babel-preset-env": "1.7.0",
-    "eslint": "4.19.1",
+    "eslint": "5.12.1",
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-plugin-import": "2.14",
     "jest": "23.6.0",
