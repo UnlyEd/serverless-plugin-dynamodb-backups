@@ -7,7 +7,9 @@
     "start": "sls offline start",
     "deploy": "sls deploy",
     "invoke:listBackups": "sls invoke -f listBackups -l",
-    "logs:backups": "sls logs -f example-dynamodbAutoBackups -t"
+    "logs:backups": "sls logs -f example-dynamodbAutoBackups -t",
+    "snyk-protect": "snyk protect",
+    "prepare": "yarn run snyk-protect"
   },
   "author": "unlyEd",
   "license": "MIT",
@@ -25,6 +27,8 @@
   "dependencies": {
     "@unly/serverless-plugin-dynamodb-backups": "1.2.0-alpha.1",
     "lodash.filter": "4.5.1",
-    "moment": "2.22.1"
-  }
+    "moment": "2.22.1",
+    "snyk": "^1.248.0"
+  },
+  "snyk": true
 }
