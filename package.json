@@ -30,7 +30,9 @@
     "test": "jest --watch",
     "coverage": "jest --coverage",
     "release:alpha": "npm publish --tag alpha --access=public",
-    "release:latest": "npm publish --tag latest --access=public"
+    "release:latest": "npm publish --tag latest --access=public",
+    "snyk-protect": "snyk protect",
+    "prepare": "yarn run snyk-protect"
   },
   "author": "unlyEd",
   "license": "MIT",
@@ -48,7 +50,8 @@
     "lodash.set": "4.3.2",
     "lodash.uniqwith": "4.5.0",
     "moment": "2.22.2",
-    "semver": "5.6.0"
+    "semver": "5.6.0",
+    "snyk": "^1.248.0"
   },
   "devDependencies": {
     "aws-sdk": "2.352.0",
@@ -58,7 +61,7 @@
     "eslint": "4.19.1",
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-plugin-import": "2.14",
-    "jest": "23.6.0",
+    "jest": "24.0.0",
     "serverless": "1.33.2"
   },
   "peerDependencies": {
@@ -69,5 +72,6 @@
     "serverless-plugin-db-backups",
     "lib",
     "README"
-  ]
+  ],
+  "snyk": true
 }
