@@ -61,7 +61,7 @@ plugins:
 Create a file, which will be called when performing a DynamoDB backup _(we named it `src/backups.js` in our `examples` folder)_:
 
 ```javascript
-import dynamodbAutoBackups from 'serverless-plugin-db-backups/lib';
+import dynamodbAutoBackups from '@unly/serverless-plugin-dynamodb-backups/lib';
 
 export const handler = dynamodbAutoBackups;
 ```
