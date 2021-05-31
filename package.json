@@ -35,7 +35,7 @@
   "author": "unlyEd",
   "license": "MIT",
   "dependencies": {
-    "axios": "0.18.0",
+    "axios": "0.21.1",
     "bluebird": "3.5.3",
     "chalk": "2.4.1",
     "lodash.assign": "4.2.0",
@@ -58,8 +58,8 @@
     "eslint": "4.19.1",
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-plugin-import": "2.14",
-    "jest": "23.6.0",
-    "serverless": "1.33.2"
+    "jest": "27.0.3",
+    "serverless": "2.43.1"
   },
   "peerDependencies": {
     "aws-sdk": ">= 2.x.x"
