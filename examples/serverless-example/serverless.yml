@@ -3,7 +3,7 @@
 
 service: example-dynamodbAutoBackups
 
-frameworkVersion: "=1.33.2"
+frameworkVersion: "=2.43.1"
 
 plugins:
   - '@unly/serverless-plugin-dynamodb-backups' # Must be first, even before "serverless-webpack", see https://github.com/UnlyEd/serverless-plugin-dynamodb-backups
