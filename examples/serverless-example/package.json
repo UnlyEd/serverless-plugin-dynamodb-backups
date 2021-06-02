@@ -12,10 +12,10 @@
   "author": "unlyEd",
   "license": "MIT",
   "devDependencies": {
-    "aws-sdk": "2.919.0",
+    "aws-sdk": "2.918.0",
     "@babel/core": "7.14.3",
     "babel-loader": "8.2.2",
-    "babel-preset-env": "1.7.0",
+    "@babel/preset-env": "7.14.4",
     "serverless": "2.43.1",
     "serverless-offline": "7.0.0",
     "serverless-webpack": "5.5.0",
