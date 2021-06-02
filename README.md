@@ -17,9 +17,9 @@ This is a plugin which simplifies **DynamoDB backups** creation automation for a
 `serverless.yml` when using the [Serverless Framework](https://serverless.com) and AWS Cloud provider.
 
 
-This plugin officially supports Node.js **6.10** and **8.10**.
+This plugin officially supports Node.js **12.x**, **14.x** and **16.x**.
 
-This plugin officially supports Serverless Framework `>=1.12.0`.
+This plugin officially supports Serverless Framework `>=2.0.0`.
 
 ## Benefits
 

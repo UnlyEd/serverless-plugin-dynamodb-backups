@@ -12,19 +12,19 @@
   "author": "unlyEd",
   "license": "MIT",
   "devDependencies": {
-    "aws-sdk": "2.363.0",
-    "babel-core": "6.26.3",
-    "babel-loader": "7.1.5",
+    "aws-sdk": "2.919.0",
+    "@babel/core": "7.14.3",
+    "babel-loader": "8.2.2",
     "babel-preset-env": "1.7.0",
-    "serverless": "1.33.2",
-    "serverless-offline": "3.31.3",
-    "serverless-webpack": "5.2.0",
-    "webpack": "4.26.1",
-    "webpack-node-externals": "1.7.2"
+    "serverless": "2.43.1",
+    "serverless-offline": "7.0.0",
+    "serverless-webpack": "5.5.0",
+    "webpack": "5.38.1",
+    "webpack-node-externals": "3.0.0"
   },
   "dependencies": {
     "@unly/serverless-plugin-dynamodb-backups": "1.2.0-alpha.1",
-    "lodash.filter": "4.5.1",
-    "moment": "2.22.1"
+    "lodash.filter": "4.6.0",
+    "moment": "2.29.1"
   }
 }
