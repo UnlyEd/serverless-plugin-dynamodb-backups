@@ -3,7 +3,8 @@
 
 service: example-dynamodbAutoBackups
 
-frameworkVersion: "=1.33.2"
+frameworkVersion: "2"
+configValidationMode: error
 
 plugins:
   - '@unly/serverless-plugin-dynamodb-backups' # Must be first, even before "serverless-webpack", see https://github.com/UnlyEd/serverless-plugin-dynamodb-backups
@@ -27,7 +28,8 @@ custom:
 
 provider:
   name: aws
-  runtime: nodejs8.10
+  runtime: nodejs14.x
+  lambdaHashingVersion: 20201221
   stage: development # TODO You may want to change this
   region: eu-west-1 # TODO You may want to change this
   profile: sandbox # TODO You need to either remove this or use your own profile
