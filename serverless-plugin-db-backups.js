@@ -41,6 +41,7 @@ class DynamodbAutoBackup {
       .then(this.validate)
       .then(this.checkConfigPlugin)
       .then(this.populateEnv)
+      .then(this.setCronEvent)
       .then(this.generateBackupFunction)
       .then(this.manageIamRole);
 
